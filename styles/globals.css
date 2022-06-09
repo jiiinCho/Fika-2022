@@ -343,6 +343,13 @@ select {
   --gap: 0.25rem;
 }
 
+.fg-200 {
+  --flow-space: 2rem;
+}
+.fg-150 {
+  --flow-space: 1.5rem;
+}
+
 /* ----------- */
 /* Components  */
 /* ----------- */

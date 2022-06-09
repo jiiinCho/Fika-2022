@@ -123,12 +123,9 @@ const DesignSystem: NextPage = () => {
             <span>03</span> Interactive Elements
           </h2>
 
-          <div className="flow">
+          <div className="flow fg-200">
             <article>
-              <h3 className="fs-14 fw-light text-grey my-50">
-                <span className="text-grey">A. </span>
-                Icons
-              </h3>
+              <h3 className="fs-16 my-50 uppercase">A. ICONS</h3>
               <div className="flex">
                 <ILogo color="icon-primary" />
                 <ISearch />
@@ -139,10 +136,7 @@ const DesignSystem: NextPage = () => {
             </article>
 
             <article>
-              <h3 className="fs-14 fw-light text-grey my-50">
-                <span className="text-grey">B. </span>
-                Rating
-              </h3>
+              <h3 className="fs-16 my-50 uppercase">B. Rating</h3>
               <div className="flex">
                 <div>
                   <h4 className="fs-14 fw-light text-grey my-50">
@@ -203,10 +197,10 @@ const DesignSystem: NextPage = () => {
             </article>
 
             <article>
-              <h3 className="fs-14 fw-light text-grey my-50">
-                <span className="text-grey">C. </span>
-                Input Elements
+              <h3 className="fs-16 my-100 uppercase my-100">
+                C. Input elements
               </h3>
+
               <div className="flow g-200">
                 <label className="fs-16 fw-medium text-black d-block">
                   <span className="d-block ">Username</span>
@@ -215,7 +209,6 @@ const DesignSystem: NextPage = () => {
                       !inputEmpty && "input--empty"
                     } input p-50 fw-regular text-black my-25`}
                     type="text"
-                    value={inputEmpty}
                   />
                   <p className="fs-14 fw-light text-grey">
                     We&rsquo;re big on real names around here, so people know
@@ -230,7 +223,6 @@ const DesignSystem: NextPage = () => {
                       !inputVal && "input--empty"
                     } input p-50 fw-regular text-black`}
                     type="text"
-                    value={inputVal}
                   />
                 </label>
 
@@ -252,18 +244,14 @@ const DesignSystem: NextPage = () => {
           <h2 className="ff-24 uppercase">
             <span>04</span> Components
           </h2>
-
           <div className="flow g-200">
             <article>
-              <h3 className="fs-14 fw-light text-grey my-50">
-                <span className="text-grey">A. </span>
-                Avatar
-              </h3>
+              <h3 className="fs-16 my-50 uppercase">A. Avatar</h3>
               <div className="flex">
                 <div>
-                  <h4>Desktop</h4>
+                  <h4 className="text-grey fs-14 my-100">Desktop</h4>
                   <Image
-                    src="https://images.squarespace-cdn.com/content/v1/54d96fcde4b0af07ca2a8871/1616629467192-HQSTI9MSL8ES895CWWCK/Linked+in_-3.jpg"
+                    src="https://res.cloudinary.com/dwfnwjjir/image/upload/v1654803390/pexels-rikki-matsumoto-5804257_hyjuya.jpg"
                     width={72}
                     height={72}
                     alt="avatar"
@@ -272,9 +260,9 @@ const DesignSystem: NextPage = () => {
                 </div>
 
                 <div>
-                  <h4>Tablet</h4>
+                  <h4 className="text-grey fs-14 my-100">Tablet</h4>
                   <Image
-                    src="https://images.squarespace-cdn.com/content/v1/54d96fcde4b0af07ca2a8871/1616629467192-HQSTI9MSL8ES895CWWCK/Linked+in_-3.jpg"
+                    src="https://res.cloudinary.com/dwfnwjjir/image/upload/v1654803390/pexels-rikki-matsumoto-5804257_hyjuya.jpg"
                     width={48}
                     height={48}
                     alt="avatar"
@@ -283,9 +271,9 @@ const DesignSystem: NextPage = () => {
                 </div>
 
                 <div>
-                  <h4>Mobile</h4>
+                  <h4 className="text-grey fs-14 my-100">Mobile</h4>
                   <Image
-                    src="https://images.squarespace-cdn.com/content/v1/54d96fcde4b0af07ca2a8871/1616629467192-HQSTI9MSL8ES895CWWCK/Linked+in_-3.jpg"
+                    src="https://res.cloudinary.com/dwfnwjjir/image/upload/v1654803390/pexels-rikki-matsumoto-5804257_hyjuya.jpg"
                     width={36}
                     height={36}
                     alt="avatar"
@@ -296,18 +284,15 @@ const DesignSystem: NextPage = () => {
             </article>
 
             <article>
-              <h3 className="fs-14 fw-light text-grey my-50">
-                <span className="text-grey">B. </span>
-                Butoon
-              </h3>
+              <h3 className="fs-16 my-50 uppercase">B. Button</h3>
               <div className="flex">
                 <div>
-                  <h4>Button Primary</h4>
+                  <h4 className="text-grey fs-14 my-100">Button Primary</h4>
                   <button className="btn-primary uppercase">save</button>
                 </div>
 
                 <div>
-                  <h4>Button Secondary</h4>
+                  <h4 className="text-grey fs-14 my-100">Button Secondary</h4>
                   <button className="btn-secondary uppercase">Delete</button>
                 </div>
               </div>
