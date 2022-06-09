@@ -2,8 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { IHeart, ILogo, IPlus, ISearch, IUser } from "@components/icons";
 import s from "../styles/DesignSystem.module.css";
+import Image from "next/image";
 
 const DesignSystem: NextPage = () => {
+  const inputEmpty = "";
+  const inputVal = "Email@email.com";
   return (
     <div className={s.container}>
       <Head>
@@ -132,6 +135,181 @@ const DesignSystem: NextPage = () => {
                 <IPlus />
                 <IHeart />
                 <IUser />
+              </div>
+            </article>
+
+            <article>
+              <h3 className="fs-14 fw-light text-grey my-50">
+                <span className="text-grey">B. </span>
+                Rating
+              </h3>
+              <div className="flex">
+                <div>
+                  <h4 className="fs-14 fw-light text-grey my-50">
+                    Rating - pressable
+                  </h4>
+                  <div className="flex">
+                    <button className="rating-pressable" aria-pressed="true">
+                      <span className="sr-only">rating tab</span>
+                    </button>
+
+                    <button className="rating-pressable" aria-pressed="false">
+                      <span className="sr-only">rating tab</span>
+                    </button>
+
+                    <button className="rating-pressable" aria-pressed="false">
+                      <span className="sr-only">rating tab</span>
+                    </button>
+
+                    <button className="rating-pressable" aria-pressed="false">
+                      <span className="sr-only">rating tab</span>
+                    </button>
+
+                    <button className="rating-pressable" aria-pressed="false">
+                      <span className="sr-only">rating tab</span>
+                    </button>
+
+                    <div className="rating-display"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="fs-14 fw-light text-grey my-50">
+                    Rating - display
+                  </h4>
+                  <div className="flex g-50">
+                    <div className="rating rating-fill">
+                      <span className="sr-only">rating tab</span>
+                    </div>
+
+                    <div className="rating rating-fill">
+                      <span className="sr-only">rating tab</span>
+                    </div>
+
+                    <div className="rating rating-fill">
+                      <span className="sr-only">rating tab</span>
+                    </div>
+
+                    <div className="rating">
+                      <span className="sr-only">rating tab</span>
+                    </div>
+
+                    <div className="rating">
+                      <span className="sr-only">rating tab</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article>
+              <h3 className="fs-14 fw-light text-grey my-50">
+                <span className="text-grey">C. </span>
+                Input Elements
+              </h3>
+              <div className="flow g-200">
+                <label className="fs-16 fw-medium text-black d-block">
+                  <span className="d-block ">Username</span>
+                  <input
+                    className={`${
+                      !inputEmpty && "input--empty"
+                    } input p-50 fw-regular text-black my-25`}
+                    type="text"
+                    value={inputEmpty}
+                  />
+                  <p className="fs-14 fw-light text-grey">
+                    We&rsquo;re big on real names around here, so people know
+                    who&rsquo;s who.
+                  </p>
+                </label>
+
+                <label className="fs-16 fw-medium text-black d-block">
+                  <span className="d-block my-50">Email</span>
+                  <input
+                    className={`${
+                      !inputVal && "input--empty"
+                    } input p-50 fw-regular text-black`}
+                    type="text"
+                    value={inputVal}
+                  />
+                </label>
+
+                <label className="fs-16 fw-medium text-black d-block">
+                  <span className="d-block my-50">Caption</span>
+                  <textarea
+                    rows={5}
+                    className={`${
+                      !inputEmpty && "input--empty"
+                    } input input--textarea p-50 fw-regular text-black`}
+                  />
+                </label>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className="flow my-300">
+          <h2 className="ff-24 uppercase">
+            <span>04</span> Components
+          </h2>
+
+          <div className="flow g-200">
+            <article>
+              <h3 className="fs-14 fw-light text-grey my-50">
+                <span className="text-grey">A. </span>
+                Avatar
+              </h3>
+              <div className="flex">
+                <div>
+                  <h4>Desktop</h4>
+                  <Image
+                    src="https://images.squarespace-cdn.com/content/v1/54d96fcde4b0af07ca2a8871/1616629467192-HQSTI9MSL8ES895CWWCK/Linked+in_-3.jpg"
+                    width={72}
+                    height={72}
+                    alt="avatar"
+                    className="avatar"
+                  />
+                </div>
+
+                <div>
+                  <h4>Tablet</h4>
+                  <Image
+                    src="https://images.squarespace-cdn.com/content/v1/54d96fcde4b0af07ca2a8871/1616629467192-HQSTI9MSL8ES895CWWCK/Linked+in_-3.jpg"
+                    width={48}
+                    height={48}
+                    alt="avatar"
+                    className="avatar"
+                  />
+                </div>
+
+                <div>
+                  <h4>Mobile</h4>
+                  <Image
+                    src="https://images.squarespace-cdn.com/content/v1/54d96fcde4b0af07ca2a8871/1616629467192-HQSTI9MSL8ES895CWWCK/Linked+in_-3.jpg"
+                    width={36}
+                    height={36}
+                    alt="avatar"
+                    className="avatar"
+                  />
+                </div>
+              </div>
+            </article>
+
+            <article>
+              <h3 className="fs-14 fw-light text-grey my-50">
+                <span className="text-grey">B. </span>
+                Butoon
+              </h3>
+              <div className="flex">
+                <div>
+                  <h4>Button Primary</h4>
+                  <button className="btn-primary uppercase">save</button>
+                </div>
+
+                <div>
+                  <h4>Button Secondary</h4>
+                  <button className="btn-secondary uppercase">Delete</button>
+                </div>
               </div>
             </article>
           </div>
