@@ -1,0 +1,12 @@
+.container {
+  padding: 1rem;
+  background-color: white;
+}
+
+.colors {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.colors article > div:first-child {
+  height: 15vh;
+}
