@@ -1,8 +1,6 @@
 import React, { useRef } from "react";
-import Navbar from "@components/Navbar";
+import { Navbar, Search, Post } from "@components/index";
 import s from "@styles/Landing.module.css";
-import { ISearch } from "@components/icons";
-import Search from "@components/Search";
 
 export default function Landing() {
   const headerRef = useRef(null);
@@ -26,7 +24,12 @@ export default function Landing() {
         </div>
       </header>
 
-      <main className={s.main}></main>
+      <main className={s.main}>
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </main>
     </div>
   );
 }

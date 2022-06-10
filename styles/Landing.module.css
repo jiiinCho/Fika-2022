@@ -43,3 +43,8 @@
 .searchWrapper > div:first-child {
   --gap: 0;
 }
+
+.main {
+  display: grid;
+  grid-template-columns: 0.85fr 1.25fr;
+}
