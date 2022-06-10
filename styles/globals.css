@@ -183,6 +183,9 @@ select {
 .bg-black {
   background-color: hsl(var(--clr-black));
 }
+.bg-black-20 {
+  background-color: hsl(var(--clr-black) / 0.2);
+}
 .bg-white {
   background-color: hsl(var(--clr-white));
 }
@@ -218,6 +221,9 @@ select {
 }
 .icon-default {
   fill: hsl(var(--clr-black-light));
+}
+.icon-white {
+  fill: hsl(var(--clr-white));
 }
 
 /* typography */

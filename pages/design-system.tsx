@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { IHeart, ILogo, IPlus, ISearch, IUser } from "@components/icons";
-import s from "../styles/DesignSystem.module.css";
 import Image from "next/image";
+import { IHeart, ILogo, IPlus, ISearch, IUser } from "@components/icons";
+import s from "@styles/DesignSystem.module.css";
 
 const DesignSystem: NextPage = () => {
   const inputEmpty = "";
