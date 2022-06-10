@@ -45,6 +45,20 @@
 }
 
 .main {
+  background-color: orange;
+  width: 100%;
   display: grid;
-  grid-template-columns: 0.85fr 1.25fr;
+  grid-template-columns: repeat(11, 1fr);
+}
+.main > article:nth-child(4n + 1) {
+  grid-column: span 6;
+}
+.main > article:nth-child(4n + 2) {
+  grid-column: span 5;
+}
+.main > article:nth-child(4n + 3) {
+  grid-column: span 5;
+}
+.main > article:nth-child(4n + 4) {
+  grid-column: span 6;
 }

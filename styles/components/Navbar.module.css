@@ -1,9 +1,15 @@
 .nav {
-  padding: clamp(0.5rem, 5vw, 1rem);
+  padding: 0.5rem;
   position: fixed;
   inset: 0 0 auto;
   z-index: 100;
   grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 45rem) {
+  .nav {
+    padding: 0.75rem;
+  }
 }
 
 .nav ul {
@@ -13,7 +19,7 @@
   list-style-type: none;
 }
 
-.logoWrapper {
+.iconWrapper {
   overflow: hidden;
 }
 

@@ -141,15 +141,6 @@ label {
 .d-block {
   display: block;
 }
-
-.v-visible {
-  visibility: visible;
-}
-
-.v-hidden {
-  visibility: hidden;
-}
-
 .flow > *:where(:not(:first-child)) {
   margin-top: var(--flow-space, 1rem);
 }
@@ -490,14 +481,20 @@ label {
 }
 
 .nav-wrapper {
-  background-color: hsl(var(--clr-white) / 0.75);
-  border-bottom: 1px solid hsl(var(--clr-white) / 0.75);
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 250ms ease-in;
+}
+
+.nav-wrapper:hover {
+  background-color: hsl(var(--clr-white) / 0.5);
+  border-bottom: 1px solid hsl(var(--clr-white) / 0.5);
 }
 
 /* apply if the query supports in the selected browser */
 @supports (backdrop-filter: blur(1.5rem)) {
-  .nav-wrapper {
-    background-color: hsl(var(--clr-white) / 0.75);
-    backdrop-filter: blur(1.5rem);
+  .nav-wrapper:hover {
+    background-color: hsl(var(--clr-white) / 0.5);
+    backdrop-filter: blur(0.5rem);
   }
 }

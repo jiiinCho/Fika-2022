@@ -38,16 +38,33 @@ export default function Navbar({ headerRef }: Props) {
 
   return (
     <nav ref={navRef} className={`grid ${s.nav} ${display && "nav-wrapper"}`}>
-      <div className={s.logoWrapper}>
+      <div className={s.iconWrapper}>
         <div className={`${display ? s.appear : s.disappear}`}>
           <ILogo color="icon-primary" />
         </div>
       </div>
       <ul className="flex">
-        <li className={`${display ? "v-visible" : "v-hidden"}`}>
+        <div className={s.iconWrapper}>
+          <li className={`${display ? s.appear : s.disappear}`}>
+            <Link href="#">
+              <a>
+                <ISearch color="icon-white" />
+              </a>
+            </Link>
+          </li>
+        </div>
+
+        <li>
           <Link href="#">
             <a>
-              <ISearch color={`${display ? "icon-default" : "icon-white"}`} />
+              <IPlus color="icon-white" />
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="#">
+            <a>
+              <IHeart color="icon-white" />
             </a>
           </Link>
         </li>
@@ -55,22 +72,7 @@ export default function Navbar({ headerRef }: Props) {
         <li>
           <Link href="#">
             <a>
-              <IPlus color={`${display ? "icon-default" : "icon-white"}`} />
-            </a>
-          </Link>
-        </li>
-        <li>
-          <Link href="#">
-            <a>
-              <IHeart color={`${display ? "icon-default" : "icon-white"}`} />
-            </a>
-          </Link>
-        </li>
-
-        <li>
-          <Link href="#">
-            <a>
-              <IUser color={`${display ? "icon-default" : "icon-white"}`} />
+              <IUser color="icon-white" />
             </a>
           </Link>
         </li>

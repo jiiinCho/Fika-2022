@@ -17,7 +17,10 @@ export default function Landing() {
         </video>
         <Navbar headerRef={headerRef} />
         <div className={`bg-black-30 ${s.searchWrapper}`}>
-          <div className="flex" style={{ flexDirection: "column" }}>
+          <div
+            className="flex"
+            style={{ flexDirection: "column", justifyContent: "center" }}
+          >
             <p className="fs-126 ff-branding text-accent uppercase">fika</p>
             <Search />
           </div>
