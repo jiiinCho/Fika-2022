@@ -1,11 +1,12 @@
+import React, { useRef } from "react";
 import Navbar from "@components/Navbar";
-import React from "react";
 import s from "@styles/Landing.module.css";
 
 export default function Landing() {
+  const headerRef = useRef(null);
   return (
     <div className={s.container}>
-      <header className={s.hero}>
+      <header ref={headerRef} className={s.hero}>
         <video loop autoPlay muted>
           <source
             src="https://res.cloudinary.com/dwfnwjjir/video/upload/v1654804501/3142211954_exznbg.mp4"
@@ -14,7 +15,7 @@ export default function Landing() {
           Your browser does not support the video tag. I suggest you upgrade
           your browser.
         </video>
-        <Navbar />
+        <Navbar headerRef={headerRef} />
       </header>
       <main className={s.main}></main>
     </div>
