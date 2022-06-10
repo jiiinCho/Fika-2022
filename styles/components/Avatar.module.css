@@ -1,0 +1,19 @@
+.container {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+@media (min-width: 35rem) {
+  .container {
+    width: 62px;
+    height: 62px;
+  }
+}
+
+.container + p:hover {
+  color: hsl(8 67% 55%);
+}
