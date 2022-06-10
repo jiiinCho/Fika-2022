@@ -1,0 +1,31 @@
+.form {
+  display: grid;
+  grid-template-areas:
+    "search"
+    "location";
+  grid-template-columns: 1fr 0.7fr;
+  gap: 0.5em;
+}
+
+@media (max-width: 35rem) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+  .form > label:last-child {
+    display: none;
+  }
+}
+
+.input {
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background: transparent;
+}
+
+.input:foucs,
+.input:active {
+  outline: none;
+}

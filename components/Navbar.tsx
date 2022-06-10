@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-// import AOS from "aos";
-import "aos/dist/aos.css";
+import Link from "next/link";
 import s from "@styles/components/Navbar.module.css";
 import { IHeart, ILogo, IPlus, ISearch, IUser } from "@components/icons";
-import Link from "next/link";
 
 type Props = {
   headerRef: React.MutableRefObject<null | HTMLDivElement>;
@@ -46,7 +44,7 @@ export default function Navbar({ headerRef }: Props) {
         </div>
       </div>
       <ul className="flex">
-        <li>
+        <li className={`${display ? "v-visible" : "v-hidden"}`}>
           <Link href="#">
             <a>
               <ISearch color={`${display ? "icon-default" : "icon-white"}`} />
