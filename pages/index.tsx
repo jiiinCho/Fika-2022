@@ -15,7 +15,13 @@ export default function Landing() {
   return (
     <div className={s.container}>
       <header ref={headerRef} className={s.header}>
-        <video loop autoPlay muted>
+        <video
+          loop
+          autoPlay
+          muted
+          poster="https://res.cloudinary.com/dwfnwjjir/image/upload/v1654934992/poster-landscape_vfb3ol.jpg"
+          style={{ objectFit: "cover" }}
+        >
           <source
             src="https://res.cloudinary.com/dwfnwjjir/video/upload/v1654804501/3142211954_exznbg.mp4"
             type="video/mp4"

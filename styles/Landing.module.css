@@ -46,7 +46,7 @@
 }
 
 .main {
-  background-color: orange;
+  background-color: black;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
