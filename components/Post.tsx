@@ -4,14 +4,20 @@ import Link from "next/link";
 import { IHeart, ILocation } from "@components/icons";
 import { Avatar } from "@components/index";
 import s from "@styles/components/Post.module.css";
+import { PostT } from "@interface/post";
 
-export default function Post() {
+type Props = {
+  post: PostT;
+};
+
+export default function Post({ post }: Props) {
+  const { avatar, username, imgUrl } = post;
   return (
     <article className={s.container}>
       <div className={s.imgWrapper}>
         <Image
           className={s.img}
-          src="https://res.cloudinary.com/dwfnwjjir/image/upload/v1654803350/pexels-ekrulila-11538094_ygtgim.jpg"
+          src={imgUrl}
           alt="Post"
           width="100%"
           height={420}
@@ -26,7 +32,7 @@ export default function Post() {
         <div className="flex" style={{ justifyContent: "space-between" }}>
           <Link href="#">
             <a style={{ color: "inherit", textDecoration: "none" }}>
-              <Avatar />
+              <Avatar username={username} avatar={avatar} />
             </a>
           </Link>
           <button className="btn-reset">

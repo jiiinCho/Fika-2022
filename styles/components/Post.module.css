@@ -6,7 +6,6 @@
 
 .imgWrapper {
   width: 100%;
-  background-color: green;
   display: grid;
   z-index: -1;
 }
