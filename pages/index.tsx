@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Navbar, Search, Post } from "@components/index";
 import s from "@styles/Landing.module.css";
-import { PostT } from "@interface/post";
+import { PostT } from "@interface/index";
 import { postList } from "data/data";
 
 // [todo]

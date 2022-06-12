@@ -22,13 +22,13 @@
   background-color: black;
 }
 
-@media (min-width: 35rem) {
+@media (min-width: 35em) {
   .header video {
     transform: translateY(-30%);
   }
 }
 
-@media (min-width: 45rem) {
+@media (min-width: 45em) {
   .header video {
     transform: translateY(-38%);
   }
@@ -64,7 +64,7 @@
   grid-column: span 12;
 }
 
-@media (min-width: 38rem) {
+@media (min-width: 38em) {
   .main > article:nth-child(4n + 1) {
     grid-column: span 7;
   }
@@ -79,7 +79,7 @@
   }
 }
 
-@media (min-width: 62rem) {
+@media (min-width: 62em) {
   .main > article:nth-child(4n + 1) {
     grid-column: span 4;
   }

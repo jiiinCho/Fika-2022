@@ -7,7 +7,7 @@
   gap: 0.5em;
 }
 
-@media (max-width: 35rem) {
+@media (max-width: 35em) {
   .form {
     grid-template-columns: 1fr;
   }

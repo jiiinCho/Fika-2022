@@ -18,7 +18,7 @@
   transition: opacity 250ms ease-in-out;
 }
 
-@media (min-width: 35rem) {
+@media (min-width: 35em) {
   .meta {
     opacity: 0;
   }

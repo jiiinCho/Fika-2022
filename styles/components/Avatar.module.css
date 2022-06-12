@@ -7,10 +7,10 @@
   place-items: center;
 }
 
-@media (min-width: 35rem) {
+@media (min-width: 35em) {
   .container {
-    width: 62px;
-    height: 62px;
+    width: 56px;
+    height: 56px;
   }
 }
 

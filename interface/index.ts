@@ -1,0 +1,22 @@
+export type PostT = {
+  id: string;
+  userId: string;
+  username: string;
+  locationId: string;
+  address: string;
+  avatar: string;
+  imgUrl: string;
+  date: string;
+  review: string;
+  likes: number;
+};
+
+export type ReviewT = {
+  id: string;
+  locationId: string;
+  address: string;
+  userId: string;
+  username: string;
+  date: string;
+  review: string;
+};

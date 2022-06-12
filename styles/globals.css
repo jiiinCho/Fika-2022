@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Plaster&family=Poppins:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Plaster&family=Poppins:wght@300;400;500&display=swap");
 
 /* ------------------ */
 /* Custom properties  */
@@ -38,6 +38,9 @@
   --m-xs: 0.25rem;
   --m-s: 0.5rem;
   --m-r: 1rem;
+
+  /* border radius */
+  --border-radius: 4px;
 }
 
 /* typo from tablet */
@@ -320,6 +323,17 @@ label {
   margin: 0.25rem 0;
 }
 
+.m-layout {
+  max-width: 960px;
+  margin: clamp(3.75rem, 8vw, 5rem) 0;
+}
+
+@media (min-width: 45em) {
+  .m-layout {
+    margin: clamp(3.75rem, 8vw, 5rem) auto;
+  }
+}
+
 .m-300 {
   margin: 3rem;
 }
@@ -334,6 +348,16 @@ label {
 }
 .m-25 {
   margin: 0.25rem;
+}
+
+.mr-100 {
+  margin-right: 1rem;
+}
+.mr-50 {
+  margin-right: 0.5rem;
+}
+.mr-25 {
+  margin-right: 0.25rem;
 }
 
 .p-300 {
@@ -418,7 +442,7 @@ label {
   outline: none;
   border: 1px solid hsl(var(--clr-primary));
   background-color: hsl(var(--clr-white));
-  border-radius: 4px;
+  border-radius: var(--border-radius);
 }
 .input:focus,
 .input:hover {
@@ -467,7 +491,7 @@ label {
   box-sizing: content-box;
   padding: 0.5rem 1rem;
   border: 1px solid hsl(var(--clr-primary));
-  border-radius: 4px;
+  border-radius: var(--border-radius);
 }
 
 .btn-primary:hover,
@@ -483,7 +507,7 @@ label {
   box-sizing: content-box;
   padding: 0.5rem 1rem;
   border: 1px solid hsl(var(--clr-primary));
-  border-radius: 4px;
+  border-radius: var(--border-radius);
 }
 
 .btn-secondary:hover,
@@ -504,5 +528,18 @@ label {
   .nav-wrapper {
     background-color: hsl(var(--clr-white) / 0.5);
     backdrop-filter: blur(0.5rem);
+  }
+}
+
+.review-wrapper {
+  border-radius: var(--border-radius);
+  border: 1px solid hsl(var(--clr-primary));
+  padding: 1rem;
+  margin: 1rem;
+}
+
+@media (min-width: 45em) {
+  .review-wrapper {
+    margin: 1rem 0;
   }
 }

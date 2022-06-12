@@ -5,8 +5,9 @@ import s from "@styles/components/Avatar.module.css";
 type Props = {
   avatar: string;
   username: string;
+  textColor?: string;
 };
-export default function Avatar({ avatar, username }: Props) {
+export default function Avatar({ avatar, username, textColor }: Props) {
   return (
     <div className="flex g-50" style={{ alignItems: "center" }}>
       <div className={s.container}>
@@ -18,7 +19,13 @@ export default function Avatar({ avatar, username }: Props) {
           objectFit="cover"
         />
       </div>
-      <p className="ff-montserrat fs-16 fw-semibold text-white">{username}</p>
+      <p
+        className={`ff-montserrat fs-16 fw-semibold ${
+          textColor ? textColor : "text-white"
+        }`}
+      >
+        {username}
+      </p>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { IHeart, ILocation } from "@components/icons";
 import { Avatar } from "@components/index";
 import s from "@styles/components/Post.module.css";
-import { PostT } from "@interface/post";
+import { PostT } from "@interface/index";
 
 type Props = {
   post: PostT;
@@ -16,7 +16,6 @@ export default function Post({ post }: Props) {
     <article className={s.container}>
       <div className={s.imgWrapper}>
         <Image
-          className={s.img}
           src={imgUrl}
           alt="Post"
           width="100%"

@@ -1,0 +1,21 @@
+.main {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.main > section:first-child > div:first-child {
+  margin: 0.5rem 0;
+}
+
+.meta {
+  display: flex;
+  gap: 0;
+  align-items: center;
+}
+
+@media (min-width: 45em) {
+  .main {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
