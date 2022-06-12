@@ -1,21 +1,66 @@
 .main {
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-areas:
+    "post"
+    "meta"
+    "related";
 }
 
-.main > section:first-child > div:first-child {
-  margin: 0.5rem 0;
+.main > section:first-child {
+  grid-area: post;
 }
 
-.meta {
-  display: flex;
-  gap: 0;
-  align-items: center;
+.main > section:nth-child(2) {
+  grid-area: meta;
+}
+
+.main > section:last-child {
+  grid-area: related;
+}
+
+.related {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+.related > article:nth-child(4n + 1) {
+  grid-column: span 12;
+}
+.related > article:nth-child(4n + 2) {
+  grid-column: span 12;
+}
+.related > article:nth-child(4n + 3) {
+  grid-column: span 12;
+}
+.related > article:nth-child(4n + 4) {
+  grid-column: span 12;
 }
 
 @media (min-width: 45em) {
   .main {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 0.5rem repeat(2, 1fr) 0.5rem;
+    grid-template-areas:
+      ". post meta ."
+      "related related related related";
     gap: 1rem;
+  }
+  .related {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .related > article:nth-child(4n + 1) {
+    grid-column: span 7;
+  }
+  .related > article:nth-child(4n + 2) {
+    grid-column: span 5;
+  }
+  .related > article:nth-child(4n + 3) {
+    grid-column: span 5;
+  }
+  .related > article:nth-child(4n + 4) {
+    grid-column: span 7;
+  }
+  .subheading {
+    margin-left: 0;
   }
 }

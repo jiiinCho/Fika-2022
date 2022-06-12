@@ -19,6 +19,7 @@
   --fs-42: 2.625rem;
   --fs-32: 2rem;
   --fs-28: 1.75rem;
+  --fs-20: 1.25rem;
   --fs-16: 1rem;
   --fs-14: 0.875rem;
   --fs-btn: 1rem;
@@ -272,6 +273,9 @@ label {
 .fs-28 {
   font-size: var(--fs-28);
 }
+.fs-20 {
+  font-size: var(--fs-20);
+}
 .fs-16 {
   font-size: var(--fs-16);
 }
@@ -322,16 +326,11 @@ label {
 .my-25 {
   margin: 0.25rem 0;
 }
-
 .m-layout {
+  width: 100%;
   max-width: 960px;
-  margin: clamp(3.75rem, 8vw, 5rem) 0;
-}
-
-@media (min-width: 45em) {
-  .m-layout {
-    margin: clamp(3.75rem, 8vw, 5rem) auto;
-  }
+  margin-inline: auto;
+  margin-top: clamp(4rem, 10vw, 5rem);
 }
 
 .m-300 {
@@ -350,6 +349,10 @@ label {
   margin: 0.25rem;
 }
 
+.ml-50 {
+  margin-left: 0.5rem;
+}
+
 .mr-100 {
   margin-right: 1rem;
 }
@@ -358,6 +361,10 @@ label {
 }
 .mr-25 {
   margin-right: 0.25rem;
+}
+
+.mt-50 {
+  margin-top: 0.5rem;
 }
 
 .p-300 {
@@ -388,6 +395,9 @@ label {
 .g-25 {
   --gap: 0.25rem;
 }
+.g-0 {
+  --gap: 0;
+}
 
 .fg-200 {
   --flow-space: 2rem;
@@ -413,7 +423,7 @@ label {
 .rating-pressable {
   background-color: transparent;
   cursor: pointer;
-  width: 20px;
+  width: 18px;
   aspect-ratio: 1;
   border-radius: 50%;
   box-sizing: content-box;
@@ -427,7 +437,7 @@ label {
 }
 
 .rating {
-  width: 18px;
+  width: 16px;
   aspect-ratio: 1;
   border-radius: 50%;
   border: 1px solid hsl(var(--clr-primary));
@@ -535,11 +545,10 @@ label {
   border-radius: var(--border-radius);
   border: 1px solid hsl(var(--clr-primary));
   padding: 1rem;
-  margin: 1rem;
 }
 
-@media (min-width: 45em) {
-  .review-wrapper {
-    margin: 1rem 0;
-  }
+.meta {
+  display: flex;
+  gap: 0;
+  align-items: center;
 }

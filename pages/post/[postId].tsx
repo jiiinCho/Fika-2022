@@ -4,7 +4,7 @@ import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { NavbarDefault, Avatar } from "@components/index";
+import { NavbarDefault, Avatar, Review, Post } from "@components/index";
 import { IHeart, ILocation } from "@components/icons";
 import s from "@styles/PostDetail.module.css";
 import { PostT } from "@interface/index";
@@ -39,14 +39,22 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   );
   //[todo] sort by date
   const related =
-    post && postList.filter((p) => p.locationId === post.locationId);
+    post &&
+    postList
+      .filter((p) => post.id !== p.userId && p.locationId === post.locationId)
+      .sort((a, b) => {
+        const val1 = new Date(a.date).getTime();
+        const val2 = new Date(b.date).getTime();
+        return val2 - val1;
+      });
   return {
     props: { post, related },
   };
 };
 
 export default function PostDetail({ post, related }: Props) {
-  console.log("post", post);
+  console.log("related", related);
+
   const router = useRouter();
   if (router.isFallback) {
     return <h1>Loading Page...</h1>;
@@ -63,12 +71,14 @@ export default function PostDetail({ post, related }: Props) {
         <NavbarDefault />
         <main className={`m-layout ${s.main}`}>
           <section>
-            <Avatar
-              avatar={avatar}
-              username={username}
-              textColor="text-black"
-            />
-            <div className="grid">
+            <div className="ml-50">
+              <Avatar
+                avatar={avatar}
+                username={username}
+                textColor="text-black"
+              />
+            </div>
+            <div className="grid mt-50">
               <Image
                 src={imgUrl}
                 alt="Post"
@@ -77,72 +87,49 @@ export default function PostDetail({ post, related }: Props) {
                 objectFit="cover"
               />
             </div>
-            <div className={s.meta}>
+            <div className="meta">
               <IHeart />
               <p>{likes} Likes</p>
             </div>
           </section>
 
           <section>
-            <div className={s.meta}>
+            <div className="meta">
               <ILocation />
               <p>{address}</p>
             </div>
-            <div className={s.meta} style={{ margin: "0 0.25rem" }}>
-              <div className="flex g-50 m-50 mr-100">
-                <div className="rating rating-fill">
-                  <span className="sr-only">rating tab</span>
-                </div>
-
-                <div className="rating rating-fill">
-                  <span className="sr-only">rating tab</span>
-                </div>
-
-                <div className="rating rating-fill">
-                  <span className="sr-only">rating tab</span>
-                </div>
-
-                <div className="rating">
-                  <span className="sr-only">rating tab</span>
-                </div>
-
-                <div className="rating">
-                  <span className="sr-only">rating tab</span>
-                </div>
-              </div>
-              <p className="fs-16 fw-regular text-grey">
-                Reviewed {getTimeDiff(date)} ago
-              </p>
-            </div>
-
-            <article className="review-wrapper">
-              <p>
-                <span className="ff-montserrat fs-16 fw-semibold mr-50">
-                  {username}
-                </span>
-                {review}
-              </p>
+            <article>
+              <h3 className="sr-only">Review List</h3>
+              <Review username={username} review={review} date={date} />
+              {related &&
+                related.map((post) => {
+                  const trimedText =
+                    post.review.length > 75
+                      ? `${post.review.slice(0, 72)}...`
+                      : post.review;
+                  return (
+                    <Review
+                      key={post.id}
+                      username={post.username}
+                      review={trimedText}
+                      date={post.date}
+                    />
+                  );
+                })}
             </article>
+          </section>
+
+          <section className="grid g-0">
+            <h3 className={`m-50 fs-20 fw-medium ${s.subheading}`}>
+              Related Posts
+            </h3>
+            <div className={s.related}>
+              {related &&
+                related.map((post) => <Post key={post.id} post={post} />)}
+            </div>
           </section>
         </main>
       </div>
     );
   }
 }
-
-const getTimeDiff = (createdAt: string) => {
-  const today = new Date().getTime();
-  const created = Number(new Date(createdAt.replace(/-/g, "/")));
-  const diffMs = today - created; // milliseconds between now & Christmas
-  const diffDays = Math.floor(diffMs / 86400000); // days
-  const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-  const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-
-  if (diffDays) {
-    return `${diffDays} days`;
-  } else if (diffHrs) {
-    return `${diffHrs} hours`;
-  } else {
-    return `${diffMins} minutes`;
-  }
-};

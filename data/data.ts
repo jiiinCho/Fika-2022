@@ -41,9 +41,9 @@ export const postList: PostT[] = [
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935174/portrait-3_bknblw.jpg",
     imgUrl:
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935595/pexels-ekrulila-11538103_qo8tos.jpg",
-    date: "Sat Jun 11 2022 10:43:24 GMT+0200 (Central European Summer Time)",
+    date: "Fri Jun 10 2022 15:43:24 GMT+0200 (Central European Summer Time)",
     review:
-      "Very welcoming staff, nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go.",
+      "Came here for breakfast with my partner at 1130 one morning and even though breakfast ended at 1100 they cheerfully took our order and our meals were great. Coffees were also good and the pastries tasted incredible.",
     likes: 0,
   },
   {
@@ -58,7 +58,7 @@ export const postList: PostT[] = [
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654803350/pexels-ekrulila-11538094_ygtgim.jpg",
     date: "Sat Jun 11 2022 10:43:24 GMT+0200 (Central European Summer Time)",
     review:
-      "Very welcoming staff,nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go",
+      "Very welcoming staff, nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go",
     likes: 0,
   },
   {
@@ -73,7 +73,7 @@ export const postList: PostT[] = [
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935595/pexels-ekrulila-11538104_rsypkw.jpg",
     date: "Sat Jun 11 2022 10:43:24 GMT+0200 (Central European Summer Time)",
     review:
-      "Very welcoming staff,nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go",
+      "The coffee and pastries are so delicious at Cafe Saturnus. We didn’t try the lunch food but many guests were and it looked great. Great outdoor tables to spend an enjoyable hour eating and people watching!",
     likes: 0,
   },
   {
@@ -86,9 +86,9 @@ export const postList: PostT[] = [
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654931232/portrait_ckueqp.jpg",
     imgUrl:
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654803350/pexels-ekrulila-11538094_ygtgim.jpg",
-    date: "Sat Jun 11 2022 10:43:24 GMT+0200 (Central European Summer Time)",
+    date: "Sat Jun 11 2022 06:43:24 GMT+0200 (Central European Summer Time)",
     review:
-      "Very welcoming staff,nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go",
+      "Came here for a little weekend fika. Beautiful coffee and delicious cakes! Would definitely recommend both! Got the large cappuccino which came in a bowl and it was oh so good!",
     likes: 0,
   },
   {
@@ -97,12 +97,11 @@ export const postList: PostT[] = [
     username: "Ekrulila",
     locationId: "1",
     address: "AB Cafe, Hagersten, Stockholm",
-
     avatar:
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935074/portrait-2_qkmjbt.jpg",
     imgUrl:
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935595/pexels-ekrulila-11538098_qyhedw.jpg",
-    date: "Sat Jun 11 2022 10:43:24 GMT+0200 (Central European Summer Time)",
+    date: "Sat Jun 11 2022 08:43:24 GMT+0200 (Central European Summer Time)",
     review:
       "Very welcoming staff,nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go",
     likes: 0,
@@ -117,9 +116,9 @@ export const postList: PostT[] = [
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935074/portrait-2_qkmjbt.jpg",
     imgUrl:
       "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935595/pexels-ekrulila-11538103_qo8tos.jpg",
-    date: "Sat Jun 11 2022 10:43:24 GMT+0200 (Central European Summer Time)",
+    date: "Sun Jun 12 2022 10:43:24 GMT+0200 (Central European Summer Time)",
     review:
-      "Very welcoming staff,nice place and really yummy/tasty food Value price and very nice place! Nice coffee as well! My review: very nice place to go",
+      "Had our first spot of lunch here in arrival to Stockholm. Situated just off of the main street in a quiet area this cafe seemed popular with locals which is always a good sign.",
     likes: 0,
   },
 ];
