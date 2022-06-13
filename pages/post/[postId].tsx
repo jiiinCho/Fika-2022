@@ -4,12 +4,18 @@ import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { NavbarDefault, Avatar, Review, Post } from "@components/index";
+import {
+  CustomHead,
+  NavbarDefault,
+  Avatar,
+  Review,
+  Post,
+} from "@components/index";
 import { IHeart, ILocation } from "@components/icons";
-import s from "@styles/PostDetail.module.css";
 import { PostT } from "@interface/index";
 import client from "@network/apollo";
 import { getAllPosts, getPostById } from "@network/queries";
+import s from "@styles/PostDetail.module.css";
 
 type Props = {
   post: PostT | undefined;
@@ -81,7 +87,8 @@ export default function PostDetail({ post, related }: Props) {
       post;
 
     return (
-      <div>
+      <>
+        <CustomHead />
         <NavbarDefault />
         <main className={`m-layout ${s.main}`}>
           <section>
@@ -143,7 +150,7 @@ export default function PostDetail({ post, related }: Props) {
             </div>
           </section>
         </main>
-      </div>
+      </>
     );
   }
 }

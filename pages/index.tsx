@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { GetStaticProps } from "next";
-import { Navbar, Search, Post } from "@components/index";
+import { CustomHead, Navbar, Search, Post } from "@components/index";
 import client from "@network/apollo";
 import { getAllPosts } from "@network/queries";
 import { PostT } from "@interface/index";
@@ -40,6 +40,7 @@ export default function Landing({ posts }: Props) {
 
   return (
     <div className={s.container}>
+      <CustomHead />
       <header ref={headerRef} className={s.header}>
         <video
           loop

@@ -1,14 +1,17 @@
 export type PostT = {
   id: string;
-  userId: string;
-  username: string;
   locationId: string;
   address: string;
-  avatar: string;
   imgUrl: string;
   createdAt: string;
   review: string;
   likes: number;
+} & UserT;
+
+export type UserT = {
+  userId: string;
+  username: string;
+  avatar: string;
 };
 
 export type ReviewT = {

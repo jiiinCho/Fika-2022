@@ -8,7 +8,7 @@
   /* colors */
   --clr-white: 53 28% 95%;
   --clr-primary: 8 67% 55%;
-  --clr-primary-shade: 9 54% 39%;
+  --clr-primary-shade: 9 67% 45%;
   --clr-secondary: 210 48% 89%;
   --clr-grey: 0 0% 56%;
   --clr-black-light: 0 3% 31%;
@@ -326,11 +326,15 @@ label {
 .my-25 {
   margin: 0.25rem 0;
 }
+
+.my-auto {
+  margin-inline: auto;
+}
+
 .m-layout {
   width: 100%;
   max-width: 960px;
-  margin-inline: auto;
-  margin-top: clamp(4rem, 10vw, 5rem);
+  margin: clamp(4rem, 10vw, 5rem) auto;
 }
 
 .m-300 {
