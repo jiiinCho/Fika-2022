@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import s from "@styles/components/Navbar.module.css";
-import { IHeart, ILogo, IPlus, ISearch, IUser } from "@components/icons";
+import { IHeart, IPlus, ISearch, IUser } from "@components/icons";
 
 export default function Navbar() {
   return (

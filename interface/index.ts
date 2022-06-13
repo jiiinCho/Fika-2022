@@ -17,6 +17,6 @@ export type ReviewT = {
   address: string;
   userId: string;
   username: string;
-  date: string;
+  createdAt: string;
   review: string;
 };
