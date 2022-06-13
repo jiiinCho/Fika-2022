@@ -26,9 +26,10 @@ type CloudinaryResponse = {
 export default function Upload() {
   const { avatar, username } = dummyUser;
 
-  const [location, setLocation] = useState("");
-  const [caption, setCaption] = useState("");
+  const [location, setLocation] = useState<string>("");
+  const [caption, setCaption] = useState<string>("");
   const [imgFile, setImgFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -36,13 +37,21 @@ export default function Upload() {
     e.preventDefault();
     console.log("location", location);
     console.log("caption", caption);
-    console.log("imgFile", imgFile);
 
     if (imgFile) {
+      setLoading(true);
+      const url = process.env.CLOUDINARY_URL;
+      const preset = process.env.CLOUDINARY_PRESET;
+      console.log("url", url);
+      console.log("preset", preset);
+      if (!url || !preset) {
+        throw new Error("cannot find CLOUDINARY_URL or preset name");
+      }
+
       const formData = new FormData();
       formData.append("file", imgFile);
-      formData.append("upload_preset", "mh9dibp3");
-      const url = "https://api.cloudinary.com/v1_1/dwfnwjjir/image/upload";
+      formData.append("upload_preset", preset);
+
       fetch(url, {
         method: "POST",
         body: formData,
@@ -50,6 +59,7 @@ export default function Upload() {
         const res = await response.text();
         const data: CloudinaryResponse = JSON.parse(res);
         console.log("url", data.url);
+        setLoading(false);
       });
     }
   };
@@ -57,6 +67,11 @@ export default function Upload() {
   const onFileUpload = () => {
     fileInputRef.current && fileInputRef.current.click();
   };
+
+  //[todo] uploading component
+  if (loading) {
+    return <h1>Uploading...</h1>;
+  }
 
   return (
     <>
