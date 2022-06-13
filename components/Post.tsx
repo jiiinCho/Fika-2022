@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function Post({ post }: Props) {
-  const { avatar, username, imgUrl } = post;
+  const { avatar, username, imgUrl, id } = post;
   return (
     <article className={s.container}>
       <div className={s.imgWrapper}>
@@ -29,7 +29,7 @@ export default function Post({ post }: Props) {
           <IHeart color="icon-white" />
         </button>
         <div className="flex" style={{ justifyContent: "space-between" }}>
-          <Link href="#">
+          <Link href={`/post/${id}`}>
             <a style={{ color: "inherit", textDecoration: "none" }}>
               <Avatar username={username} avatar={avatar} />
             </a>

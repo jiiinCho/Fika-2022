@@ -8,7 +8,13 @@ export default function Navbar() {
     <nav className={`grid nav-wrapper ${s.nav}`}>
       <div className={s.iconWrapper}>
         <div className={s.appear}>
-          <ILogo color="icon-primary" />
+          <Link href="/">
+            <a>
+              <p className="fs-28 ff-branding text-accent uppercase ml-25">
+                fika
+              </p>
+            </a>
+          </Link>
         </div>
       </div>
       <ul className="flex">
@@ -22,14 +28,14 @@ export default function Navbar() {
           </li>
         </div>
 
-        <li>
+        <li className={s.list}>
           <Link href="#">
             <a>
               <IPlus />
             </a>
           </Link>
         </li>
-        <li>
+        <li className={s.list}>
           <Link href="#">
             <a>
               <IHeart />
@@ -37,7 +43,7 @@ export default function Navbar() {
           </Link>
         </li>
 
-        <li>
+        <li className={s.list}>
           <Link href="#">
             <a>
               <IUser />

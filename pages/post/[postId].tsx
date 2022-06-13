@@ -8,7 +8,8 @@ import { NavbarDefault, Avatar, Review, Post } from "@components/index";
 import { IHeart, ILocation } from "@components/icons";
 import s from "@styles/PostDetail.module.css";
 import { PostT } from "@interface/index";
-import { postList } from "data/data";
+import client from "@network/apollo";
+import { getAllPosts, getPostById } from "@network/queries";
 
 type Props = {
   post: PostT | undefined;
@@ -22,11 +23,11 @@ interface Params extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [
-      { params: { postId: "1" } },
-      { params: { postId: "2" } },
-      { params: { postId: "3" } },
+      { params: { postId: "62a6202843f899f21b325a7a" } },
+      { params: { postId: "62a6214243f899f21b325a7e" } },
+      { params: { postId: "62a6219343f899f21b325a82" } },
     ],
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -34,29 +35,41 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   context
 ) => {
   const { postId } = context.params!;
-  const post = postList.find(
-    (post) => parseInt(post.id) === parseInt(postId[0])
-  );
-  //[todo] sort by date
+  const {
+    data: { getPostById: post },
+    error: getPostByIdError,
+  } = await client.query({ query: getPostById, variables: { id: postId } });
+
+  //  [todo] backend, Build a query: getPostByLocationId
+  const {
+    data: { getAllPosts: postList },
+    error: getAllPostsError,
+  } = await client.query({ query: getAllPosts });
+
+  //[TBC] Error handling
+  if (getPostByIdError || getAllPostsError) {
+    return {
+      props: { post: undefined, related: undefined },
+    };
+  }
+
   const related =
     post &&
     postList
-      .filter((p) => post.id !== p.userId && p.locationId === post.locationId)
-      .sort((a, b) => {
-        const val1 = new Date(a.date).getTime();
-        const val2 = new Date(b.date).getTime();
-        return val2 - val1;
-      });
+      .filter(
+        (p: PostT) => post.id !== p.userId && p.locationId === post.locationId
+      )
+      .sort((a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt));
+
   return {
     props: { post, related },
   };
 };
 
 export default function PostDetail({ post, related }: Props) {
-  console.log("related", related);
-
   const router = useRouter();
   if (router.isFallback) {
+    //[todo] make skeleton component
     return <h1>Loading Page...</h1>;
   }
 
@@ -64,7 +77,8 @@ export default function PostDetail({ post, related }: Props) {
     //[todo] make no list found page
     return <h1>No List Found, return to Home</h1>;
   } else {
-    const { username, address, avatar, imgUrl, date, review, likes } = post;
+    const { username, address, avatar, imgUrl, createdAt, review, likes } =
+      post;
 
     return (
       <div>
@@ -100,7 +114,7 @@ export default function PostDetail({ post, related }: Props) {
             </div>
             <article>
               <h3 className="sr-only">Review List</h3>
-              <Review username={username} review={review} date={date} />
+              <Review username={username} review={review} date={createdAt} />
               {related &&
                 related.map((post) => {
                   const trimedText =
@@ -112,7 +126,7 @@ export default function PostDetail({ post, related }: Props) {
                       key={post.id}
                       username={post.username}
                       review={trimedText}
-                      date={post.date}
+                      date={post.createdAt}
                     />
                   );
                 })}

@@ -40,7 +40,13 @@ export default function Navbar({ headerRef }: Props) {
     <nav ref={navRef} className={`grid ${s.nav} ${display && "nav-wrapper"}`}>
       <div className={s.iconWrapper}>
         <div className={`${display ? s.appear : s.disappear}`}>
-          <ILogo color="icon-primary" />
+          <Link href="/">
+            <a>
+              <p className="fs-28 ff-branding text-accent uppercase ml-25">
+                fika
+              </p>
+            </a>
+          </Link>
         </div>
       </div>
       <ul className="flex">
@@ -54,14 +60,14 @@ export default function Navbar({ headerRef }: Props) {
           </li>
         </div>
 
-        <li>
+        <li className={s.list}>
           <Link href="#">
             <a>
               <IPlus color="icon-white" />
             </a>
           </Link>
         </li>
-        <li>
+        <li className={s.list}>
           <Link href="#">
             <a>
               <IHeart color="icon-white" />
@@ -69,7 +75,7 @@ export default function Navbar({ headerRef }: Props) {
           </Link>
         </li>
 
-        <li>
+        <li className={s.list}>
           <Link href="#">
             <a>
               <IUser color="icon-white" />

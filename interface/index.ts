@@ -6,7 +6,7 @@ export type PostT = {
   address: string;
   avatar: string;
   imgUrl: string;
-  date: string;
+  createdAt: string;
   review: string;
   likes: number;
 };

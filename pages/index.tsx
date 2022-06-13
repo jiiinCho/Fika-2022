@@ -1,17 +1,43 @@
 import React, { useRef } from "react";
+import { GetStaticProps } from "next";
 import { Navbar, Search, Post } from "@components/index";
-import s from "@styles/Landing.module.css";
+import client from "@network/apollo";
+import { getAllPosts } from "@network/queries";
 import { PostT } from "@interface/index";
-import { postList } from "data/data";
+import s from "@styles/Landing.module.css";
 
-// [todo]
-// type Props = {
-//   posts: PostT[];
-// };
+type Props = {
+  posts: PostT[];
+};
 
-export default function Landing() {
-  const posts: PostT[] = postList;
+export const getStaticProps: GetStaticProps = async () => {
+  const {
+    data: { getAllPosts: posts },
+    error,
+  } = await client.query({ query: getAllPosts });
+
+  // [TBC] error handling
+  if (error) {
+    console.log("------------------------");
+    console.error(`error while fetching all posts ${error}`);
+    return {
+      props: { posts: [] },
+    };
+  }
+
+  return {
+    props: { posts },
+  };
+};
+
+export default function Landing({ posts }: Props) {
   const headerRef = useRef(null);
+
+  if (!posts) {
+    //[todo] make no list found page
+    return <h1>No List Found, return to Home</h1>;
+  }
+
   return (
     <div className={s.container}>
       <header ref={headerRef} className={s.header}>

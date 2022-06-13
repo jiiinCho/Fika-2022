@@ -20,15 +20,30 @@
 }
 
 .iconWrapper {
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
 .appear {
+  display: flex;
+  align-items: center;
   transform: translateY(0);
   transition: transform 420ms ease-in;
 }
 
+.list,
+.list > a,
+.appear > a,
+.disappear > a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .disappear {
-  transform: translateY(100%);
+  display: flex;
+  align-items: center;
+  transform: translateY(120%);
   transition: transform 420ms ease-in;
 }

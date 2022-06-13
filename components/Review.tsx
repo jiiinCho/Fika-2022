@@ -48,8 +48,8 @@ export default function Review({ username, review, date }: Props) {
 
 const getTimeDiff = (createdAt: string) => {
   const today = new Date().getTime();
-  const created = Number(new Date(createdAt.replace(/-/g, "/")));
-  const diffMs = today - created; // milliseconds between now & Christmas
+  // const created = Number(new Date(createdAt.replace(/-/g, "/")));
+  const diffMs = today - Number(createdAt); // milliseconds between now & Christmas
   const diffDays = Math.floor(diffMs / 86400000); // days
   const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
   const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
