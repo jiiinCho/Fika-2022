@@ -23,3 +23,10 @@ export type ReviewT = {
   createdAt: string;
   review: string;
 };
+
+export type LocationT = {
+  business: string;
+  street: string;
+  city: string;
+  country: string;
+};

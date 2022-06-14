@@ -411,6 +411,9 @@ label {
 .fg-150 {
   --flow-space: 1.5rem;
 }
+.fg-75 {
+  --flow-space: 0.75rem;
+}
 
 /* ----------- */
 /* Components  */
@@ -436,8 +439,15 @@ label {
   padding: 4px;
   border: 1px solid hsl(var(--clr-primary));
 }
-.rating-pressable:hover,
-.rating-pressable:focus,
+.rating-pressable[aria-pressed="false"] {
+  background-color: transparent;
+}
+
+.rating-pressable[aria-pressed="true"]:hover,
+.rating-pressable:hover {
+  background-color: hsl(var(--clr-primary-shade) / 0.5);
+}
+
 .rating-pressable[aria-pressed="true"] {
   background-color: hsl(var(--clr-primary));
 }

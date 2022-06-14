@@ -1,8 +1,13 @@
 import React, { useState, useRef } from "react";
-import { Avatar, CustomHead, NavbarDefault } from "@components/index";
-
+import {
+  Avatar,
+  CustomHead,
+  NavbarDefault,
+  Location,
+  Rating,
+} from "@components/index";
+import { LocationT } from "@interface/index";
 import s from "@styles/PostDetail.module.css";
-import { UserT } from "@interface/index";
 
 const dummyUser = {
   userId: "1",
@@ -17,55 +22,65 @@ const dummyUser = {
 //   }
 
 type CloudinaryResponse = {
-  asset_id: string;
   width: string;
   height: string;
+  secure_url: string;
+};
+
+type APIResponse = {
   url: string;
+  preset: string;
 };
 
 export default function Upload() {
   const { avatar, username } = dummyUser;
 
-  const [location, setLocation] = useState<string>("");
   const [caption, setCaption] = useState<string>("");
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [rating, setRating] = useState<Number>(0);
 
+  console.log("rating", rating);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("location", location);
     console.log("caption", caption);
 
     if (imgFile) {
       setLoading(true);
-      const url = process.env.CLOUDINARY_URL;
-      const preset = process.env.CLOUDINARY_PRESET;
-      console.log("url", url);
-      console.log("preset", preset);
-      if (!url || !preset) {
-        throw new Error("cannot find CLOUDINARY_URL or preset name");
-      }
+
+      /* 
+      [TBC] unable to get file from FormData in /api/imageHandler 
+      username would be exposed if you check network tab, do not know how to solve it! 20220613
+      this method is not to use dotenv library 
+      */
+
+      const response = await fetch("/api/imageHandler");
+      const { url, preset } = (await response.json()) as APIResponse;
 
       const formData = new FormData();
       formData.append("file", imgFile);
       formData.append("upload_preset", preset);
 
-      fetch(url, {
+      const res = await fetch(url, {
         method: "POST",
         body: formData,
-      }).then(async (response) => {
-        const res = await response.text();
-        const data: CloudinaryResponse = JSON.parse(res);
-        console.log("url", data.url);
-        setLoading(false);
       });
+
+      const { secure_url } = (await res.json()) as CloudinaryResponse;
+
+      secure_url && setLoading(false);
     }
   };
 
   const onFileUpload = () => {
     fileInputRef.current && fileInputRef.current.click();
+  };
+
+  const getLocationVar = (locationInfo: LocationT) => {
+    console.log("locationInfo", locationInfo);
   };
 
   //[todo] uploading component
@@ -92,6 +107,7 @@ export default function Upload() {
               style={{ height: "420px", placeItems: "center" }}
             >
               <input
+                required={true}
                 aria-hidden={true}
                 ref={fileInputRef}
                 style={{ display: "none" }}
@@ -112,45 +128,11 @@ export default function Upload() {
           </div>
         </section>
 
-        <section>
-          <form className="flow" onSubmit={handleOnSubmit}>
-            <label className="my-auto fs-16 fw-medium text-black d-block">
-              <span className="d-block my-50">Add location</span>
-              <input
-                className={`${
-                  !location && "input--empty"
-                } input p-50 fw-regular text-black`}
-                type="text"
-                value={location}
-                name="location"
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </label>
+        <section className="my-100">
+          <form className="flow fg-200" onSubmit={handleOnSubmit}>
+            <Location getLocationVar={getLocationVar} />
 
-            <label className="my-auto fs-16 fw-medium text-black d-block">
-              <span className="d-block my-50">Rating</span>
-              <div className="flex">
-                <button className="rating-pressable" aria-pressed="true">
-                  <span className="sr-only">rating tab</span>
-                </button>
-
-                <button className="rating-pressable" aria-pressed="false">
-                  <span className="sr-only">rating tab</span>
-                </button>
-
-                <button className="rating-pressable" aria-pressed="false">
-                  <span className="sr-only">rating tab</span>
-                </button>
-
-                <button className="rating-pressable" aria-pressed="false">
-                  <span className="sr-only">rating tab</span>
-                </button>
-
-                <button className="rating-pressable" aria-pressed="false">
-                  <span className="sr-only">rating tab</span>
-                </button>
-              </div>
-            </label>
+            <Rating setRating={setRating} />
 
             <label className="my-auto fs-16 fw-medium text-black d-block">
               <span className="d-block my-50">Caption</span>
@@ -164,6 +146,7 @@ export default function Upload() {
                 onChange={(e) => setCaption(e.target.value)}
               />
             </label>
+
             <div className="my-auto flex" style={{ justifyContent: "center" }}>
               <button type="submit" className="btn-primary uppercase">
                 Upload

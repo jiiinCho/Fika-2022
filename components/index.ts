@@ -5,3 +5,5 @@ export { default as Post } from "./Post";
 export { default as Avatar } from "./Avatar";
 export { default as Review } from "./Review";
 export { default as CustomHead } from "./CustomHead";
+export { default as Location } from "./Location";
+export { default as Rating } from "./Rating";
