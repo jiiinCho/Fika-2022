@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,9 +13,11 @@ import {
 } from "@components/index";
 import { LocationT } from "@interface/index";
 import s from "@styles/PostDetail.module.css";
+import imageUploader from "@network/imageUploader";
 
+// [todo] get user info from context?
 const dummyUser = {
-  userId: "1",
+  id: "62a61f8843f899f21b325a78",
   username: "Maria Olga",
   avatar:
     "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935174/portrait-3_bknblw.jpg",
@@ -25,18 +28,8 @@ const dummyUser = {
 //       userInfo : UserT
 //   }
 
-type CloudinaryResponse = {
-  width: string;
-  height: string;
-  secure_url: string;
-};
-
-type APIResponse = {
-  url: string;
-  preset: string;
-};
-
 export default function Upload() {
+  const router = useRouter();
   const { avatar, username } = dummyUser;
 
   const [caption, setCaption] = useState<string>("");
@@ -49,10 +42,6 @@ export default function Upload() {
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("caption", caption);
-    console.log("rating", rating);
-    console.log("location", location);
-
     if (!imgFile) {
       toast.error("Please select an image file", {
         position: "top-right",
@@ -67,24 +56,21 @@ export default function Upload() {
       return;
     } else {
       setLoading(true);
-      /* 
-      [TBC] unable to get file from FormData in /api/imageHandler 
-      username would be exposed if you check network tab, do not know how to solve it! 20220613
-      this method is not to use dotenv library 
-      */
-      const apiRes = await fetch("/api/imageHandler");
-      const { url, preset } = (await apiRes.json()) as APIResponse;
-
-      const formData = new FormData();
-      formData.append("file", imgFile);
-      formData.append("upload_preset", preset);
-
-      const cloudinaryRes = await fetch(url, {
+      const imgUrl = await imageUploader(imgFile);
+      const locationTemp = { ...location, id: "0" };
+      const formHandlerResponse = await fetch("/api/formHandler", {
         method: "POST",
-        body: formData,
+        body: JSON.stringify({
+          user: dummyUser,
+          imgUrl,
+          rating,
+          location: locationTemp,
+          review: caption,
+        }),
       });
-      const { secure_url } = (await cloudinaryRes.json()) as CloudinaryResponse;
-      secure_url && setLoading(false);
+      const { postId } = await formHandlerResponse.json();
+      //[todo] update redirect to upload fail page
+      postId ? router.push(`/post/${postId}`) : router.push("/");
     }
   };
 

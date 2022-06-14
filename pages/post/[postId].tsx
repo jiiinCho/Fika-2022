@@ -14,7 +14,7 @@ import {
 import { IHeart, ILocation } from "@components/icons";
 import { PostT } from "@interface/index";
 import client from "@network/apollo";
-import { getAllPosts, getPostById } from "@network/queries";
+import { getPostByLocation, getPostById } from "@network/queries";
 import s from "@styles/PostDetail.module.css";
 
 type Props = {
@@ -29,9 +29,9 @@ interface Params extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [
-      { params: { postId: "62a6202843f899f21b325a7a" } },
-      { params: { postId: "62a6214243f899f21b325a7e" } },
-      { params: { postId: "62a6219343f899f21b325a82" } },
+      { params: { postId: "62a8af39fb867f2294f8b8ee" } },
+      { params: { postId: "62a8af8afb867f2294f8b8f6" } },
+      { params: { postId: "62a8afadfb867f2294f8b8fb" } },
     ],
     fallback: true,
   };
@@ -43,33 +43,26 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   const { postId } = context.params!;
   const {
     data: { getPostById: post },
-    error: getPostByIdError,
+    error,
   } = await client.query({ query: getPostById, variables: { id: postId } });
 
-  //  [todo] backend, Build a query: getPostByLocationId
+  const locationId = post.location.id;
   const {
-    data: { getAllPosts: postList },
-    error: getAllPostsError,
-  } = await client.query({ query: getAllPosts });
+    data: { getPostByLocation: relatedPosts },
+    error: relatedError,
+  } = await client.query({
+    query: getPostByLocation,
+    variables: { locationId },
+  });
 
-  //[TBC] Error handling
-  if (getPostByIdError || getAllPostsError) {
-    return {
-      props: { post: undefined, related: undefined },
-    };
-  }
+  const related = relatedPosts.sort(
+    (a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt)
+  );
 
-  const related =
-    post &&
-    postList
-      .filter(
-        (p: PostT) => post.id !== p.userId && p.locationId === post.locationId
-      )
-      .sort((a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt));
-
-  return {
-    props: { post, related },
-  };
+  // [TBC] Error handling
+  return error || relatedError
+    ? { props: { post: undefined, related: undefined } }
+    : { props: { post, related } };
 };
 
 export default function PostDetail({ post, related }: Props) {
@@ -83,9 +76,15 @@ export default function PostDetail({ post, related }: Props) {
     //[todo] make no list found page
     return <h1>No List Found, return to Home</h1>;
   } else {
-    const { username, address, avatar, imgUrl, createdAt, review, likes } =
-      post;
-
+    const {
+      user: { username, avatar },
+      location: { business, street, city, country },
+      imgUrl,
+      createdAt,
+      review,
+      likes,
+    } = post;
+    const address = `${business}, ${street}, ${city}, ${country}`;
     return (
       <>
         <CustomHead />
@@ -128,12 +127,16 @@ export default function PostDetail({ post, related }: Props) {
                     post.review.length > 75
                       ? `${post.review.slice(0, 72)}...`
                       : post.review;
+                  const {
+                    user: { username },
+                    createdAt,
+                  } = post;
                   return (
                     <Review
                       key={post.id}
-                      username={post.username}
+                      username={username}
                       review={trimedText}
-                      date={post.createdAt}
+                      date={createdAt}
                     />
                   );
                 })}

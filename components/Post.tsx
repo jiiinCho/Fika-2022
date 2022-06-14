@@ -11,7 +11,11 @@ type Props = {
 };
 
 export default function Post({ post }: Props) {
-  const { avatar, username, imgUrl, id } = post;
+  const {
+    user: { username, avatar },
+    imgUrl,
+    id,
+  } = post;
   return (
     <article className={s.container}>
       <div className={s.imgWrapper}>

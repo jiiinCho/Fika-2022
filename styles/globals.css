@@ -334,7 +334,7 @@ label {
 .m-layout {
   width: 100%;
   max-width: 960px;
-  margin: clamp(4rem, 10vw, 5rem) auto;
+  margin-top: clamp(4rem, 10vw, 5rem);
 }
 
 .m-300 {

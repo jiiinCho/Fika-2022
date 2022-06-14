@@ -1,32 +1,29 @@
 export type PostT = {
   id: string;
-  locationId: string;
-  address: string;
+  user: UserT;
+  location: LocationT;
   imgUrl: string;
   createdAt: string;
   review: string;
   likes: number;
-} & UserT;
+  rating: number;
+};
 
 export type UserT = {
-  userId: string;
+  id: string;
   username: string;
   avatar: string;
 };
 
-export type ReviewT = {
-  id: string;
-  locationId: string;
-  address: string;
-  userId: string;
-  username: string;
-  createdAt: string;
-  review: string;
-};
+export type AuthUser = {
+  password: string;
+  email: string;
+} & UserT;
 
 export type LocationT = {
   business: string;
   street: string;
   city: string;
   country: string;
+  id: string;
 };
