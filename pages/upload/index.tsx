@@ -39,14 +39,15 @@ export default function Upload() {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<Number>(0);
+  const [location, setLocation] = useState<undefined | LocationT>(undefined);
 
-  console.log("rating", rating);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("location", location);
     console.log("caption", caption);
+    console.log("rating", rating);
+    console.log("location", location);
 
     if (imgFile) {
       setLoading(true);
@@ -77,10 +78,6 @@ export default function Upload() {
 
   const onFileUpload = () => {
     fileInputRef.current && fileInputRef.current.click();
-  };
-
-  const getLocationVar = (locationInfo: LocationT) => {
-    console.log("locationInfo", locationInfo);
   };
 
   //[todo] uploading component
@@ -128,19 +125,17 @@ export default function Upload() {
           </div>
         </section>
 
-        <section className="my-100">
+        <section className="my-200">
           <form className="flow fg-200" onSubmit={handleOnSubmit}>
-            <Location getLocationVar={getLocationVar} />
-
+            <Location setLocation={setLocation} />
             <Rating setRating={setRating} />
-
             <label className="my-auto fs-16 fw-medium text-black d-block">
               <span className="d-block my-50">Caption</span>
               <textarea
                 rows={5}
                 className={`${
                   !caption && "input--empty"
-                } input input--textarea p-50 fw-regular text-black`}
+                } input input--textarea p-50 fw-regular`}
                 value={caption}
                 name="caption"
                 onChange={(e) => setCaption(e.target.value)}

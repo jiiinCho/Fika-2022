@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { LocationT } from "@interface/index";
 
 type Props = {
-  getLocationVar: (locationInput: LocationT) => void;
+  setLocation: React.Dispatch<React.SetStateAction<LocationT | undefined>>;
 };
 
-export default function Location({ getLocationVar }: Props) {
+export default function Location({ setLocation }: Props) {
   const [business, setBusiness] = useState<string>("");
   const [street, setStreet] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -13,9 +13,14 @@ export default function Location({ getLocationVar }: Props) {
 
   useEffect(() => {
     if (business && street && city && country) {
-      getLocationVar({ business, street, city, country });
+      setLocation({
+        business: capitalizeFirstLetter(business),
+        street: capitalizeFirstLetter(street),
+        city: capitalizeFirstLetter(city),
+        country: capitalizeFirstLetter(country),
+      });
     }
-  }, [business, street, city, country, getLocationVar]);
+  }, [business, street, city, country, setLocation]);
 
   return (
     <article className="flow fg-75">
@@ -28,6 +33,7 @@ export default function Location({ getLocationVar }: Props) {
       <label className="my-auto fs-16 text-black d-block">
         <span className="d-block my-25 fs-14 text-grey">Business name</span>
         <input
+          required={true}
           className={`${
             !business && "input--empty"
           } input p-50 fw-regular text-black`}
@@ -42,6 +48,7 @@ export default function Location({ getLocationVar }: Props) {
       <label className="my-auto fs-16 text-black d-block">
         <span className="d-block my-25 fs-14 text-grey">Street</span>
         <input
+          required={true}
           className={`${
             !street && "input--empty"
           } input p-50 fw-regular text-black`}
@@ -63,6 +70,7 @@ export default function Location({ getLocationVar }: Props) {
         >
           <span className="d-block my-25 fs-14 text-grey">City</span>
           <input
+            required={true}
             className={`${
               !city && "input--empty"
             } input p-50 fw-regular text-black`}
@@ -79,6 +87,7 @@ export default function Location({ getLocationVar }: Props) {
         >
           <span className="d-block my-25 fs-14 text-grey">Country</span>
           <input
+            required={true}
             className={`${
               !country && "input--empty"
             } input p-50 fw-regular text-black`}
@@ -92,4 +101,10 @@ export default function Location({ getLocationVar }: Props) {
       </div>
     </article>
   );
+}
+
+function capitalizeFirstLetter(sentence: string) {
+  const str = sentence.slice(1);
+  const firstLetter = sentence.charAt(0).toUpperCase();
+  return firstLetter + str;
 }

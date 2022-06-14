@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   setRating: React.Dispatch<React.SetStateAction<Number>>;
@@ -19,6 +19,7 @@ export default function Rating({ setRating }: Props) {
         for (let i = 0; i < curr; i++) {
           updated[i] = 1;
         }
+        setRating(updated.reduce((p, c) => p + c, 0));
         return updated;
       });
     } else {
@@ -27,11 +28,10 @@ export default function Rating({ setRating }: Props) {
         for (let i = curr - 1; i < prev.length; i++) {
           updated[i] = 0;
         }
+        setRating(updated.reduce((p, c) => p + c, 0));
         return updated;
       });
     }
-
-    setRating(pressed.reduce((p, c) => p + c, 0));
   };
 
   return (

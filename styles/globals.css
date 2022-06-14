@@ -474,6 +474,9 @@ label {
 .input:hover {
   background-color: hsl(var(--clr-secondary));
 }
+.input::placeholder {
+  color: hsl(var(--clr-primary) / 0.6);
+}
 .input--empty {
   border: 1px solid hsl(var(--clr-secondary));
   background-color: hsl(var(--clr-secondary));
@@ -482,11 +485,6 @@ label {
 .input--empty:focus,
 .input--empty:hover {
   border: 1px solid hsl(var(--clr-primary));
-}
-
-.input:focus,
-.input:active {
-  color: hsl(var(--clr-primary));
 }
 
 .input--textarea {
