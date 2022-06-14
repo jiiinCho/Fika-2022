@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import {
   Avatar,
   CustomHead,
+  Caption,
   NavbarDefault,
   Location,
   Rating,
@@ -40,6 +41,7 @@ export default function Upload() {
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<Number>(0);
   const [location, setLocation] = useState<undefined | LocationT>(undefined);
+  const [imgAlert, setImgAlert] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -49,35 +51,36 @@ export default function Upload() {
     console.log("rating", rating);
     console.log("location", location);
 
-    if (imgFile) {
+    if (!imgFile) {
+      setImgAlert(true);
+      return;
+    } else {
+      setImgAlert(false);
       setLoading(true);
-
       /* 
       [TBC] unable to get file from FormData in /api/imageHandler 
       username would be exposed if you check network tab, do not know how to solve it! 20220613
       this method is not to use dotenv library 
       */
-
-      const response = await fetch("/api/imageHandler");
-      const { url, preset } = (await response.json()) as APIResponse;
+      const apiRes = await fetch("/api/imageHandler");
+      const { url, preset } = (await apiRes.json()) as APIResponse;
 
       const formData = new FormData();
       formData.append("file", imgFile);
       formData.append("upload_preset", preset);
 
-      const res = await fetch(url, {
+      const cloudinaryRes = await fetch(url, {
         method: "POST",
         body: formData,
       });
-
-      const { secure_url } = (await res.json()) as CloudinaryResponse;
-
+      const { secure_url } = (await cloudinaryRes.json()) as CloudinaryResponse;
       secure_url && setLoading(false);
     }
   };
 
   const onFileUpload = () => {
     fileInputRef.current && fileInputRef.current.click();
+    setImgAlert(false);
   };
 
   //[todo] uploading component
@@ -126,26 +129,25 @@ export default function Upload() {
         </section>
 
         <section className="my-200">
-          <form className="flow fg-200" onSubmit={handleOnSubmit}>
+          <form className="flow" onSubmit={handleOnSubmit}>
             <Location setLocation={setLocation} />
             <Rating setRating={setRating} />
-            <label className="my-auto fs-16 fw-medium text-black d-block">
-              <span className="d-block my-50">Caption</span>
-              <textarea
-                rows={5}
-                className={`${
-                  !caption && "input--empty"
-                } input input--textarea p-50 fw-regular`}
-                value={caption}
-                name="caption"
-                onChange={(e) => setCaption(e.target.value)}
-              />
-            </label>
-
-            <div className="my-auto flex" style={{ justifyContent: "center" }}>
-              <button type="submit" className="btn-primary uppercase">
+            <Caption setCaption={setCaption} />
+            <div
+              className="my-auto flex"
+              style={{ justifyContent: "center", flexDirection: "column" }}
+            >
+              <button type="submit" className="my-auto btn-primary uppercase">
                 Upload
               </button>
+              {imgAlert && (
+                <p
+                  className="flex fs-14 fw-light text-accent"
+                  style={{ justifyContent: "center" }}
+                >
+                  Please select an image file
+                </p>
+              )}
             </div>
           </form>
         </section>
