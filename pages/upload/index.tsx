@@ -1,4 +1,7 @@
 import React, { useState, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   Avatar,
   CustomHead,
@@ -41,7 +44,6 @@ export default function Upload() {
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<Number>(0);
   const [location, setLocation] = useState<undefined | LocationT>(undefined);
-  const [imgAlert, setImgAlert] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -52,10 +54,18 @@ export default function Upload() {
     console.log("location", location);
 
     if (!imgFile) {
-      setImgAlert(true);
+      toast.error("Please select an image file", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     } else {
-      setImgAlert(false);
       setLoading(true);
       /* 
       [TBC] unable to get file from FormData in /api/imageHandler 
@@ -80,7 +90,6 @@ export default function Upload() {
 
   const onFileUpload = () => {
     fileInputRef.current && fileInputRef.current.click();
-    setImgAlert(false);
   };
 
   //[todo] uploading component
@@ -90,6 +99,7 @@ export default function Upload() {
 
   return (
     <>
+      <ToastContainer />
       <CustomHead />
       <NavbarDefault />
       <main className={`m-layout ${s.main}`}>
@@ -140,14 +150,6 @@ export default function Upload() {
               <button type="submit" className="my-auto btn-primary uppercase">
                 Upload
               </button>
-              {imgAlert && (
-                <p
-                  className="flex fs-14 fw-light text-accent"
-                  style={{ justifyContent: "center" }}
-                >
-                  Please select an image file
-                </p>
-              )}
             </div>
           </form>
         </section>
