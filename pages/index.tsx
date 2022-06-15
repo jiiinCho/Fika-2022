@@ -16,18 +16,8 @@ export const getStaticProps: GetStaticProps = async () => {
     error,
   } = await client.query({ query: getAllPosts });
 
-  // [TBC] error handling
-  if (error) {
-    console.log("------------------------");
-    console.error(`error while fetching all posts ${error}`);
-    return {
-      props: { posts: [] },
-    };
-  }
-
-  return {
-    props: { posts },
-  };
+  // [TBC] Error handling
+  return error ? { props: { posts: [] } } : { props: { posts } };
 };
 
 export default function Landing({ posts }: Props) {
@@ -46,7 +36,7 @@ export default function Landing({ posts }: Props) {
           loop
           autoPlay
           muted
-          poster="https://res.cloudinary.com/dwfnwjjir/image/upload/v1654934992/poster-landscape_vfb3ol.jpg"
+          poster="https://res.cloudinary.com/dwfnwjjir/image/upload/v1655291091/black-screen_zpuc23.jpg"
           style={{ objectFit: "cover" }}
         >
           <source

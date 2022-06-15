@@ -29,9 +29,9 @@ interface Params extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [
-      { params: { postId: "62a8af39fb867f2294f8b8ee" } },
-      { params: { postId: "62a8af8afb867f2294f8b8f6" } },
-      { params: { postId: "62a8afadfb867f2294f8b8fb" } },
+      { params: { postId: "62a8d7b50ca42fbec30a597f" } },
+      { params: { postId: "62a8d87a0ca42fbec30a5987" } },
+      { params: { postId: "62a8d8ca0ca42fbec30a598c" } },
     ],
     fallback: true,
   };
