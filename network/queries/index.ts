@@ -65,6 +65,18 @@ export const getPostByLocation = gql`
   }
 `;
 
+export const searchLocation = `
+  query SearchLocation($business: String) {
+    searchLocation(business: $business) {
+      id
+      business
+      street
+      city
+      country
+    }
+  }
+`;
+
 export const createPost = `
   mutation CreatePost($post: PostInput) {
     createPost(post: $post) {

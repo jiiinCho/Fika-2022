@@ -335,6 +335,7 @@ label {
   width: 100%;
   max-width: 960px;
   margin-top: clamp(4rem, 10vw, 5rem);
+  margin-inline: auto;
 }
 
 .m-300 {

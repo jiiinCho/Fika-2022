@@ -14,6 +14,7 @@ import {
 import { LocationT } from "@interface/index";
 import s from "@styles/PostDetail.module.css";
 import imageUploader from "@network/imageUploader";
+import fetcher from "@network/fetcher";
 
 // [todo] get user info from context?
 const dummyUser = {
@@ -57,18 +58,14 @@ export default function Upload() {
     } else {
       setLoading(true);
       const imgUrl = await imageUploader(imgFile);
-      const locationTemp = { ...location, id: "0" };
-      const formHandlerResponse = await fetch("/api/formHandler", {
-        method: "POST",
-        body: JSON.stringify({
-          user: dummyUser,
-          imgUrl,
-          rating,
-          location: locationTemp,
-          review: caption,
-        }),
-      });
-      const { postId } = await formHandlerResponse.json();
+      const reqBody = {
+        user: dummyUser,
+        imgUrl,
+        rating,
+        location,
+        review: caption,
+      };
+      const { postId } = await fetcher("/api/formHandler", reqBody);
       //[todo] update redirect to upload fail page
       postId ? router.push(`/post/${postId}`) : router.push("/");
     }
