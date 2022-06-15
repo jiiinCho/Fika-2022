@@ -1,9 +1,17 @@
 import React, { useState, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { CustomHead, NavbarDefault, Footer } from "@components/index";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
+import imageUploader from "@network/imageUploader";
+import fetcher from "@network/fetcher";
 
 export default function Login() {
+  const router = useRouter();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [signUp, setSignUp] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -15,11 +23,64 @@ export default function Login() {
     fileInputRef.current && fileInputRef.current.click();
   };
 
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let reqBody;
+
+    if (signUp) {
+      if (!imgFile) {
+        toast.error("Please select a profile image", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return;
+      }
+      const avatar = await imageUploader(imgFile, true);
+      reqBody = {
+        user: { username, password, email, avatar },
+      };
+    } else {
+      reqBody = {
+        user: { username, password },
+      };
+    }
+    reqBody = { ...reqBody, isSignUp: signUp };
+    const { user, message } = await fetcher("/api/authHandler", reqBody);
+    //[todo] update redirect to upload fail page
+    user
+      ? router.push("/")
+      : toast.error(message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+  };
+
+  //[todo] uploading component
+  if (loading) {
+    return <h1>Uploading...</h1>;
+  }
   return (
     <>
+      <ToastContainer />
       <CustomHead />
       <NavbarDefault />
-      <form className="m-layout grid m-footer" style={{ placeItems: "center" }}>
+      <form
+        className="m-layout grid m-footer"
+        style={{ placeItems: "center" }}
+        onSubmit={handleOnSubmit}
+      >
         <h1 className="ff-28 fw-medium my-100" style={{ textAlign: "center" }}>
           {signUp ? "Join FIKA today" : "Sign in to FIKA"}
         </h1>
@@ -154,6 +215,15 @@ export default function Login() {
           />
           <span className="fs-16 text-black">Create new account</span>
         </label>
+
+        <div
+          className="my-auto flex"
+          style={{ justifyContent: "center", flexDirection: "column" }}
+        >
+          <button type="submit" className="my-auto btn-primary uppercase">
+            {signUp ? "Create" : "Sign In"}
+          </button>
+        </div>
       </form>
       <Footer />
     </>

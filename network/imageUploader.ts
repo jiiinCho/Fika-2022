@@ -7,6 +7,7 @@ type CloudinaryResponse = {
 type APIResponse = {
   url: string;
   preset: string;
+  avatar: string;
 };
 
 /* 
@@ -15,13 +16,14 @@ type APIResponse = {
       this method is not to use dotenv library 
 */
 
-export default async function imageUploader(imgFile: File) {
+export default async function imageUploader(imgFile: File, isAvatar?: boolean) {
   const apiRes = await fetch("/api/imageHandler");
-  const { url, preset } = (await apiRes.json()) as APIResponse;
+  const { url, preset, avatar } = (await apiRes.json()) as APIResponse;
+  const uploadPreset = isAvatar ? avatar : preset;
 
   const formData = new FormData();
   formData.append("file", imgFile);
-  formData.append("upload_preset", preset);
+  formData.append("upload_preset", uploadPreset);
 
   const cloudinaryRes = await fetch(url, {
     method: "POST",

@@ -108,3 +108,27 @@ export const updateLikes = `
     }
   }
 `;
+
+export const createUser = `
+  mutation CreateUser ($user: UserInput){
+    createUser(user: $user) {
+      user{
+        id
+        accessToken
+      }
+      message
+    }
+  }
+`;
+
+export const loginUser = `
+  query Login($user: LoginInput) {
+    login(user: $user) {
+      user{
+        id
+        accessToken
+      }
+      message
+    }
+  }
+`;

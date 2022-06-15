@@ -23,7 +23,10 @@ export default function Caption({ setCaption }: Props) {
   };
 
   return (
-    <label className="my-auto fs-16 fw-medium text-black d-block">
+    <label
+      className="my-auto fs-16 fw-medium text-black d-block"
+      htmlFor="caption"
+    >
       <div
         className="flex"
         style={{ justifyContent: "space-between", alignItems: "center" }}

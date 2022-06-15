@@ -63,7 +63,7 @@ export default function Location({ setLocation }: Props) {
       >
         Add location
       </h5>
-      <label className="my-auto fs-16 text-black d-block">
+      <label className="my-auto fs-16 text-black d-block" htmlFor="business">
         <span className="d-block my-25 fs-14 text-grey">Business name</span>
         <input
           required={true}
@@ -71,6 +71,7 @@ export default function Location({ setLocation }: Props) {
             !business && "input--empty"
           } input p-50 fw-regular text-black`}
           type="text"
+          id="business"
           value={business}
           name="business"
           onChange={(e) => {
@@ -84,7 +85,7 @@ export default function Location({ setLocation }: Props) {
         />
       </label>
 
-      <label className="my-auto fs-16 text-black d-block">
+      <label className="my-auto fs-16 text-black d-block" htmlFor="location">
         <span className="d-block my-25 fs-14 text-grey">Street</span>
         <input
           required={true}
@@ -105,6 +106,7 @@ export default function Location({ setLocation }: Props) {
       >
         <label
           className="my-auto fs-16 text-black d-block"
+          htmlFor="city"
           style={{ maxWidth: "142px" }}
         >
           <span className="d-block my-25 fs-14 text-grey">City</span>
@@ -122,6 +124,7 @@ export default function Location({ setLocation }: Props) {
         </label>
         <label
           className="my-auto fs-16 text-black d-block"
+          htmlFor="country"
           style={{ maxWidth: "142px" }}
         >
           <span className="d-block my-25 fs-14 text-grey">Country</span>
