@@ -1,0 +1,36 @@
+.container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  max-width: 960px;
+  margin: 1rem auto;
+  grid-template-columns: 1rem 1fr 1rem;
+  grid-template-areas:
+    ". text ."
+    ". copyright .";
+}
+.container p {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.container > p:first-child {
+  grid-area: text;
+}
+.container > p:last-child {
+  grid-area: copyright;
+}
+
+@media (min-width: 35em) {
+  .container {
+    grid-template-columns: 1rem 1fr 1fr 1rem;
+    grid-template-areas: ". text copyright .";
+  }
+  .container > p:first-child {
+    text-align: start;
+  }
+  .container > p:last-child {
+    text-align: end;
+  }
+}

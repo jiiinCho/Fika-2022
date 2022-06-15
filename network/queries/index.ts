@@ -99,3 +99,12 @@ export const createPost = `
     }
   }
 `;
+
+export const updateLikes = `
+  mutation UpdateLikes($id: ID) {
+    updateLikes(id: $id) {
+      id
+      likes
+    }
+  }
+`;

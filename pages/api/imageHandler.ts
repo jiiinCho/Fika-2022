@@ -12,9 +12,6 @@ export default async function handler(
   const url = process.env.CLOUDINARY_URL;
   const preset = process.env.CLOUDINARY_PRESET;
 
-  console.log("url", url);
-  console.log("preset", preset);
-
   if (!url || !preset) {
     throw new Error("cannot find CLOUDINARY_URL or preset name");
   }

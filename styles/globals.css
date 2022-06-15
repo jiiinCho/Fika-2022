@@ -94,9 +94,9 @@ body {
 
   min-height: 100vh;
   display: grid;
-
-  /* min-content: navbar, 1fr : main content */
   grid-template-rows: min-content 1fr;
+
+  position: relative;
 }
 
 img,
@@ -110,6 +110,7 @@ button,
 textarea,
 select {
   font: inherit;
+  line-height: 1.4;
 }
 
 label {
@@ -334,8 +335,12 @@ label {
 .m-layout {
   width: 100%;
   max-width: 960px;
-  margin-top: clamp(4rem, 10vw, 5rem);
+  margin-top: clamp(4rem, 10vh, 5rem);
   margin-inline: auto;
+}
+
+.m-footer {
+  margin-bottom: clamp(5rem, 15vh, 6rem);
 }
 
 .m-300 {
@@ -421,6 +426,10 @@ label {
 }
 .fg-75 {
   --flow-space: 0.75rem;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 /* ----------- */

@@ -8,3 +8,4 @@ export { default as CustomHead } from "./CustomHead";
 export { default as Location } from "./Location";
 export { default as Rating } from "./Rating";
 export { default as Caption } from "./Caption";
+export { default as Footer } from "./Footer";

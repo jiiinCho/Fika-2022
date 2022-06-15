@@ -42,7 +42,7 @@ export default function Location({ setLocation }: Props) {
         setCountry(country);
       }
     }
-    getSearchResult();
+    business && getSearchResult();
   }, [business, locationId, autoComplete]);
 
   const handleOnKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {

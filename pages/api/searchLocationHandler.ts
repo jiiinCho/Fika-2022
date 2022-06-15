@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import fetcher from "@network/fetcher";
 import { searchLocation as query } from "@network/queries";
-import fetch from "node-fetch";
 import { LocationT } from "@interface/index";
 
 type FetchResponse = {
@@ -21,25 +21,17 @@ export default async function handler(
   if (!url) {
     throw new Error("cannot find BACKEND_URL");
   }
-
-  const { business } = JSON.parse(req.body);
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  const graphql = JSON.stringify({
+  const { business } = req.body;
+  const requestBody = {
     query,
     variables: { business },
-  });
-
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: graphql,
   };
 
   try {
-    const response = await fetch(url, requestOptions);
-    const result = (await response.json()) as FetchResponse;
-    res.json({ locations: result.data.searchLocation }); //send the response
+    const {
+      data: { searchLocation },
+    } = (await fetcher(url, requestBody)) as FetchResponse;
+    res.json({ locations: searchLocation }); //send the response
   } catch (err) {
     console.error("---------error---------");
     console.error(err);

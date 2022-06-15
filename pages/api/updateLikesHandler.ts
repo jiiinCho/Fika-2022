@@ -1,17 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { createPost as query } from "@network/queries";
+import { updateLikes as query } from "@network/queries";
 
 type FetchResponse = {
   data: {
-    createPost: {
+    updateLikes: {
       id: string;
+      likes: number;
     };
   };
 };
 
 type Response = {
-  postId: string;
+  id: string;
+  likes: number;
 };
 
 export default async function handler(
@@ -22,19 +24,21 @@ export default async function handler(
   if (!url) {
     throw new Error("cannot find BACKEND_URL");
   }
-  const post = req.body;
-  const mutationBody = {
+  const { postId } = req.body;
+
+  const requestBody = {
     query,
-    variables: { post },
+    variables: { id: postId },
   };
 
   try {
+    const response = await fetcher(url, requestBody);
     const {
       data: {
-        createPost: { id },
+        updateLikes: { id, likes },
       },
-    } = (await fetcher(url, mutationBody)) as FetchResponse;
-    res.json({ postId: id });
+    } = (await response.json()) as FetchResponse;
+    res.json({ id, likes }); //send the response
   } catch (err) {
     console.error("---------error---------");
     console.error(err);
