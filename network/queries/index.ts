@@ -37,6 +37,7 @@ export const getPostById = gql`
       createdAt
       review
       likes
+      rating
     }
   }
 `;
@@ -61,6 +62,7 @@ export const getPostByLocation = gql`
       createdAt
       review
       likes
+      rating
     }
   }
 `;

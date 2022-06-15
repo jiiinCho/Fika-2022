@@ -45,7 +45,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
     data: { getPostById: post },
     error,
   } = await client.query({ query: getPostById, variables: { id: postId } });
-
   const locationId = post.location.id;
   const {
     data: { getPostByLocation: relatedPosts },
@@ -54,8 +53,10 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
     query: getPostByLocation,
     variables: { locationId },
   });
-
-  const related = relatedPosts.sort(
+  const filteredPost = relatedPosts.filter(
+    (p: PostT) => p.user.id !== post.user.id
+  );
+  const related = [...filteredPost].sort(
     (a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt)
   );
 
@@ -77,12 +78,14 @@ export default function PostDetail({ post, related }: Props) {
     return <h1>No List Found, return to Home</h1>;
   } else {
     const {
+      id,
       user: { username, avatar },
       location: { business, street, city, country },
       imgUrl,
       createdAt,
       review,
       likes,
+      rating,
     } = post;
     const address = `${business}, ${street}, ${city}, ${country}`;
     return (
@@ -108,7 +111,7 @@ export default function PostDetail({ post, related }: Props) {
               />
             </div>
             <div className="meta">
-              <IHeart />
+              <IHeart padding="iheart-padding" />
               <p>{likes} Likes</p>
             </div>
           </section>
@@ -116,11 +119,21 @@ export default function PostDetail({ post, related }: Props) {
           <section>
             <div className="meta">
               <ILocation />
-              <p>{address}</p>
+              <div>
+                <p>{business}</p>
+                <p className="fs-14 mt-25 fw-light">
+                  {street}, {city}, {country}
+                </p>
+              </div>
             </div>
             <article>
               <h3 className="sr-only">Review List</h3>
-              <Review username={username} review={review} date={createdAt} />
+              <Review
+                username={username}
+                review={review}
+                date={createdAt}
+                rating={rating}
+              />
               {related &&
                 related.map((post) => {
                   const trimedText =
@@ -128,8 +141,10 @@ export default function PostDetail({ post, related }: Props) {
                       ? `${post.review.slice(0, 72)}...`
                       : post.review;
                   const {
+                    id,
                     user: { username },
                     createdAt,
+                    rating,
                   } = post;
                   return (
                     <Review
@@ -137,6 +152,8 @@ export default function PostDetail({ post, related }: Props) {
                       username={username}
                       review={trimedText}
                       date={createdAt}
+                      postId={id}
+                      rating={rating}
                     />
                   );
                 })}
@@ -144,7 +161,7 @@ export default function PostDetail({ post, related }: Props) {
           </section>
 
           <section className="grid g-0">
-            <h3 className={`m-50 fs-20 fw-medium ${s.subheading}`}>
+            <h3 className={`m-50 ml-100 fs-20 fw-medium ${s.subheading}`}>
               Related Posts
             </h3>
             <div className={s.related}>

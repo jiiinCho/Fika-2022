@@ -354,6 +354,9 @@ label {
   margin: 0.25rem;
 }
 
+.ml-100 {
+  margin-left: 1rem;
+}
 .ml-50 {
   margin-left: 0.5rem;
 }
@@ -388,6 +391,10 @@ label {
 }
 .p-25 {
   padding: 0.25rem;
+}
+
+.pl-0 {
+  padding-left: 0;
 }
 
 .g-200 {
@@ -546,6 +553,15 @@ label {
   background-color: hsl(var(--clr-white) / 0.5);
   border-bottom: 1px solid hsl(var(--clr-white) / 0.5);
   transition: all 250ms ease-in;
+}
+
+.iheart-padding {
+  padding: 0.5rem;
+}
+@media (min-width: 45em) {
+  .iheart-padding {
+    padding-left: 0;
+  }
 }
 
 /* apply if the query supports in the selected browser */

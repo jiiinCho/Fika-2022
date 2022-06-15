@@ -13,6 +13,14 @@
 
 .main > section:nth-child(2) {
   grid-area: meta;
+  margin-top: 0;
+}
+
+@media (min-width: 45em) {
+  .main > section:nth-child(2) {
+    grid-area: meta;
+    margin-top: 3.5rem;
+  }
 }
 
 .main > section:last-child {
@@ -59,8 +67,5 @@
   }
   .related > article:nth-child(4n + 4) {
     grid-column: span 7;
-  }
-  .subheading {
-    margin-left: 0;
   }
 }
