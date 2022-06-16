@@ -40,6 +40,7 @@ export type AuthUserT = {
   username: string;
   avatar: string;
   accessToken: string;
+  likedPosts: Array<string>;
 };
 
 export type AuthResT = {

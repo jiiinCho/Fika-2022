@@ -62,15 +62,10 @@ export default function LikedPosts({ posts }: Props) {
     <>
       <CustomHead />
       <NavbarDefault />
-      <main className={`m-footer ${s.main}`}>
+      <main className={`m-footer ${s.main}`} style={{ marginTop: "3.8rem" }}>
         {posts && posts.map((post) => <Post key={post.id} post={post} />)}
       </main>
       <Footer />
     </>
   );
-}
-
-function getFileName(url: string) {
-  const splited = url.split("/");
-  return splited[splited.length - 1];
 }

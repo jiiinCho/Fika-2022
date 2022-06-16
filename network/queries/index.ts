@@ -113,12 +113,15 @@ export const createPost = `
 `;
 
 export const updateLikes = `
-  mutation UpdateLikes($id: ID) {
-    updateLikes(id: $id) {
-      id
-      likes
-    }
+mutation UpdateLikes($id: ID, $userId: ID) {
+  updateLikes(id: $id, userId: $userId) {
+   post {
+        id
+        likes
+      }
+   liked
   }
+}
 `;
 
 export const createUser = `
@@ -129,6 +132,7 @@ export const createUser = `
         avatar
         id
         username
+        likedPosts
       }
       message
     }
@@ -143,6 +147,7 @@ export const loginUser = `
         avatar
         id
         username
+        likedPosts
       }
       message
     }

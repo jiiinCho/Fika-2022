@@ -1,21 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { IHeart, ILocation } from "@components/icons";
 import { Avatar } from "@components/index";
 import s from "@styles/components/Post.module.css";
 import { PostT } from "@interface/index";
+import { useRouter } from "next/router";
+import { useAuthContext } from "context/AuthContext";
+import fetcher from "@network/fetcher";
 
 type Props = {
   post: PostT;
 };
 
 export default function Post({ post }: Props) {
+  const [likedPost, setLikedPost] = useState(false);
+
   const {
     user: { username, avatar },
     imgUrl,
     id,
   } = post;
+
+  const router = useRouter();
+  const authService = useAuthContext();
+
+  useEffect(() => {
+    if (authService) {
+      const currUser = authService.getUser();
+      if (currUser && currUser.likedPosts.length) {
+        const found = currUser.likedPosts.filter((postId) => postId === id);
+        found.length && setLikedPost(true);
+      }
+    }
+  }, [authService, id]);
+
+  const handleOnBtnClick = async () => {
+    if (authService) {
+      const currUser = authService.getUser();
+      if (currUser) {
+        const { liked } = await fetcher("/api/updateLikesHandler", {
+          postId: id,
+          userId: currUser.id,
+          accessToken: currUser.accessToken,
+        });
+        setLikedPost(liked);
+      } else {
+        router.push("/signIn");
+      }
+    }
+  };
+
   return (
     <article className={s.container}>
       <div className={s.imgWrapper}>
@@ -29,8 +64,8 @@ export default function Post({ post }: Props) {
       </div>
 
       <div className={s.meta}>
-        <button className="btn-reset">
-          <IHeart color="icon-white" />
+        <button className="btn-reset" onClick={handleOnBtnClick}>
+          <IHeart color={`${likedPost ? "icon-primary" : "icon-white"}`} />
         </button>
         <div className="flex" style={{ justifyContent: "space-between" }}>
           <Link href={`/post/${id}`}>

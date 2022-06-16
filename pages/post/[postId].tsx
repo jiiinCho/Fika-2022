@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
@@ -16,9 +16,10 @@ import { PostT } from "@interface/index";
 import client from "@network/apollo";
 import { getPostByLocation, getPostById } from "@network/queries";
 import s from "@styles/PostDetail.module.css";
+import { useAuthContext } from "context/AuthContext";
 
 type Props = {
-  post: PostT | undefined;
+  currPost: PostT | undefined;
   related: PostT[] | undefined;
 };
 
@@ -41,33 +42,52 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   context
 ) => {
   const { postId } = context.params!;
-  const {
-    data: { getPostById: post },
-    error,
-  } = await client.query({ query: getPostById, variables: { id: postId } });
-  const locationId = post.location.id;
-  const {
-    data: { getPostByLocation: relatedPosts },
-    error: relatedError,
-  } = await client.query({
-    query: getPostByLocation,
-    variables: { locationId },
-  });
-  const filteredPost = relatedPosts.filter(
-    (p: PostT) => p.user.id !== post.user.id
-  );
-  const related = [...filteredPost].sort(
-    (a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt)
-  );
 
-  // [TBC] Error handling
-  return error || relatedError
-    ? { props: { post: undefined, related: undefined } }
-    : { props: { post, related } };
+  let currPost: PostT | undefined = undefined;
+  let related: Array<PostT> = [];
+
+  try {
+    const {
+      data: { getPostById: post },
+    } = await client.query({ query: getPostById, variables: { id: postId } });
+    currPost = post;
+
+    const locationId = post.location.id;
+    const {
+      data: { getPostByLocation: relatedPosts },
+    } = await client.query({
+      query: getPostByLocation,
+      variables: { locationId },
+    });
+    const filteredPost = relatedPosts.filter(
+      (p: PostT) => p.user.id !== post.user.id
+    );
+    related = [...filteredPost].sort(
+      (a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt)
+    );
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return { props: { currPost, related } };
+  }
 };
 
-export default function PostDetail({ post, related }: Props) {
+export default function PostDetail({ currPost: post, related }: Props) {
   const router = useRouter();
+  const authService = useAuthContext();
+
+  const [likedPost, setLikedPost] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (authService) {
+      const currUser = authService.getUser();
+      if (currUser && currUser.likedPosts.length && post) {
+        const found = currUser.likedPosts.find((postId) => postId === post.id);
+        setLikedPost(!!found);
+      }
+    }
+  }, [authService, post]);
+
   if (router.isFallback) {
     //[todo] make skeleton component
     return <h1>Loading Page...</h1>;
@@ -111,7 +131,10 @@ export default function PostDetail({ post, related }: Props) {
               />
             </div>
             <div className="meta">
-              <IHeart padding="iheart-padding" />
+              <IHeart
+                padding="iheart-padding"
+                color={`${likedPost && "icon-primary"}`}
+              />
               <p>{likes} Likes</p>
             </div>
           </section>
