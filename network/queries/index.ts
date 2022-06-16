@@ -71,6 +71,7 @@ export const getUserById = gql`
       username
       email
       avatar
+      likedPosts
     }
   }
 `;
