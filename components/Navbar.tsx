@@ -15,7 +15,6 @@ export default function Navbar({ headerRef }: Props) {
   const [display, setDisplay] = useState(false);
   const [currUser, setCurrUser] = useState<AuthUserT | undefined>(undefined);
   const authService = useAuthContext();
-
   useEffect(() => {
     authService && setCurrUser(authService.getUser());
   }, [authService]);
@@ -84,7 +83,7 @@ export default function Navbar({ headerRef }: Props) {
         </li>
 
         <li className={s.list}>
-          <Link href="/signIn">
+          <Link href={currUser ? `/user/${currUser.id}` : "/signIn"}>
             <a>
               <IUser color="icon-white" />
             </a>

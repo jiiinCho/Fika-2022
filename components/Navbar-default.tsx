@@ -54,7 +54,7 @@ export default function Navbar() {
         </li>
 
         <li className={s.list}>
-          <Link href="/signIn">
+          <Link href={currUser ? `/user/${currUser.id}` : "/signIn"}>
             <a>
               <IUser />
             </a>

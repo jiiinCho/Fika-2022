@@ -1,17 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { createUser, loginUser } from "@network/queries";
+import { updateUser, deleteUser } from "@network/queries";
 import { AuthResT } from "@interface/index";
 
-type LoginResponse = {
+type UpdateUserInfoResponse = {
   data: {
-    login: AuthResT;
+    updateUser: AuthResT;
   };
 };
 
-type CreateUserResponse = {
+type DeleteUserResponse = {
   data: {
-    createUser: AuthResT;
+    deleteUser: AuthResT;
   };
 };
 
@@ -23,26 +23,26 @@ export default async function handler(
   if (!url) {
     throw new Error("cannot find BACKEND_URL");
   }
-  const { user: userReq, isSignUp } = req.body;
-  const query = !!isSignUp ? createUser : loginUser;
+  const { user: userReq, id, accessToken } = req.body;
+  const query = userReq ? updateUser : deleteUser;
   const body = {
     query,
-    variables: { user: userReq },
+    variables: { id, user: userReq },
   };
   try {
-    if (isSignUp) {
+    if (userReq) {
       const {
         data: {
-          createUser: { user, message },
+          updateUser: { user, message },
         },
-      } = (await fetcher(url, body)) as CreateUserResponse;
+      } = (await fetcher(url, body, accessToken)) as UpdateUserInfoResponse;
       res.json({ user, message });
     } else {
       const {
         data: {
-          login: { user, message },
+          deleteUser: { user, message },
         },
-      } = (await fetcher(url, body)) as LoginResponse;
+      } = (await fetcher(url, body, accessToken)) as DeleteUserResponse;
       res.json({ user, message });
     }
   } catch (err) {

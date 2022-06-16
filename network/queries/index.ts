@@ -64,6 +64,17 @@ export const getPostByLocation = gql`
   }
 `;
 
+export const getUserById = gql`
+  query GetUserById($id: ID) {
+    getUserById(id: $id) {
+      id
+      username
+      email
+      avatar
+    }
+  }
+`;
+
 export const searchLocation = `
   query SearchLocation($business: String) {
     searchLocation(business: $business) {
@@ -131,6 +142,32 @@ export const loginUser = `
         avatar
         id
         username
+      }
+      message
+    }
+  }
+`;
+
+export const updateUser = `
+  mutation UpdateUser($id: ID, $user: UserInput) {
+    updateUser(id: $id, user: $user) {
+      user {
+          id
+      username
+      email
+      password
+      avatar
+      }
+      message
+    }
+  }
+`;
+
+export const deleteUser = `
+  mutation DeleteUser($id: ID) {
+    deleteUser(id: $id) {
+      user {
+          id
       }
       message
     }

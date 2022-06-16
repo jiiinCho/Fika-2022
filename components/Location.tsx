@@ -14,7 +14,7 @@ export default function Location({ setLocation }: Props) {
   const [country, setCountry] = useState<string>("");
   const [autoComplete, setAutoComplete] = useState<boolean>(false);
   let timeoutId: NodeJS.Timeout;
-  const waitTime = 750;
+  const waitTime = 625;
 
   useEffect(() => {
     if (business && street && city && country) {
