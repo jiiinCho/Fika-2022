@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React from "react";
 import Link from "next/link";
 import s from "@styles/components/Navbar.module.css";
 import { IHeart, IPlus, ISearch, IUser } from "@components/icons";
@@ -44,7 +44,7 @@ export default function Navbar() {
         </li>
 
         <li className={s.list}>
-          <Link href="#">
+          <Link href="/signIn">
             <a>
               <IUser />
             </a>

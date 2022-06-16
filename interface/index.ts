@@ -15,11 +15,6 @@ export type UserT = {
   avatar: string;
 };
 
-export type AuthUser = {
-  password: string;
-  email: string;
-} & UserT;
-
 export type LocationT = {
   business: string;
   street: string;
@@ -27,3 +22,34 @@ export type LocationT = {
   country: string;
   id: string;
 };
+
+// Authentication
+export type SignUpUserInputT = {
+  email: string;
+  imgFile: File;
+} & SignInUserInputT;
+
+export type SignInUserInputT = {
+  username: string;
+  password: string;
+  isSignUp: boolean;
+};
+
+export type AuthUserT = {
+  id: string;
+  username: string;
+  avatar: string;
+  accessToken: string;
+};
+
+export type AuthResT = {
+  user: AuthUserT;
+  message: string;
+};
+
+export interface AuthServiceI {
+  getUser: () => AuthUserT | undefined;
+  signUp: (args: SignUpUserInputT) => Promise<AuthResT>;
+  signIn: (args: SignInUserInputT) => Promise<AuthResT>;
+  logout: () => void;
+}

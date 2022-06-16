@@ -2,11 +2,14 @@ import React, { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { CustomHead, NavbarDefault, Footer } from "@components/index";
 import "react-toastify/dist/ReactToastify.css";
+
 import { useRouter } from "next/router";
-import imageUploader from "@network/imageUploader";
-import fetcher from "@network/fetcher";
+import { useAuthContext } from "context/AuthContext";
+import { AuthUserT } from "@interface/index";
 
 export default function Login() {
+  const context = useAuthContext();
+
   const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -23,53 +26,86 @@ export default function Login() {
     fileInputRef.current && fileInputRef.current.click();
   };
 
+  const displayErrMsg = (message: string) => {
+    return toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const pageRouter = (user: null | AuthUserT, message: string) => {
+    if (!user) {
+      setLoading(false);
+      displayErrMsg(message);
+    } else {
+      router.push("/");
+    }
+  };
+
+  const signInUser = async () => {
+    setLoading(true);
+    if (context) {
+      const { user, message } = await context.signIn({
+        username,
+        password,
+        isSignUp: signUp,
+      });
+      pageRouter(user, message);
+    }
+  };
+
+  const signUpUser = async () => {
+    if (!imgFile) {
+      displayErrMsg("Please select a profile image");
+      return;
+    }
+
+    if (context) {
+      setLoading(true);
+      const { user, message } = await context.signUp({
+        username,
+        password,
+        email,
+        imgFile,
+        isSignUp: signUp,
+      });
+      pageRouter(user, message);
+    }
+  };
+
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let reqBody;
-
-    if (signUp) {
-      if (!imgFile) {
-        toast.error("Please select a profile image", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        return;
-      }
-      const avatar = await imageUploader(imgFile, true);
-      reqBody = {
-        user: { username, password, email, avatar },
-      };
+    if (username.length > 15 || username.length < 3) {
+      displayErrMsg("Username must be between 3 to 15 characters");
+    } else if (password.length < 5) {
+      displayErrMsg("Password must be at least 5 characters");
+      return;
+    } else if (password.search(/[a-z]/i) < 0) {
+      displayErrMsg("Password must contain at least one letter.");
+      return;
+    } else if (password.search(/[0-9]/) < 0) {
+      displayErrMsg("Password must contain at least one digit.");
+      return;
+    } else if (password !== confirmPassword) {
+      displayErrMsg("Passwords not match");
+      return;
+    } else if (!email) {
+      displayErrMsg("Email address is required");
+      return;
     } else {
-      reqBody = {
-        user: { username, password },
-      };
+      signUp ? signUpUser() : signInUser();
     }
-    reqBody = { ...reqBody, isSignUp: signUp };
-    const { user, message } = await fetcher("/api/authHandler", reqBody);
-    //[todo] update redirect to upload fail page
-    user
-      ? router.push("/")
-      : toast.error(message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
   };
 
   //[todo] uploading component
   if (loading) {
-    return <h1>Uploading...</h1>;
+    return <h1>Log In...</h1>;
   }
   return (
     <>
@@ -162,7 +198,7 @@ export default function Login() {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="email@abc.com"
+                placeholder="abc@abc.com"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -170,19 +206,13 @@ export default function Login() {
               />
             </label>
 
-            <label
-              className="my-auto fs-16 fw-medium text-black d-block w-100"
-              htmlFor="avatar"
-            >
+            <label className="my-auto fs-16 fw-medium text-black d-block w-100">
               <span className="d-block my-50">Profile Image</span>
               <input
-                required={true}
                 aria-hidden={true}
                 ref={fileInputRef}
                 style={{ display: "none" }}
                 type="file"
-                id="avatar"
-                name="avatar"
                 onChange={(e) => {
                   e.target.files && setImgFile(e.target.files[0]);
                 }}

@@ -1,27 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
 import { createUser, loginUser } from "@network/queries";
+import { AuthResT } from "@interface/index";
 
-type AuthUser = { id: string; accessToken: string };
-type AuthResponse = {
-  user: AuthUser;
-  message: string;
-};
 type LoginResponse = {
   data: {
-    login: AuthResponse;
+    login: AuthResT;
   };
 };
 
 type CreateUserResponse = {
   data: {
-    createUser: AuthResponse;
+    createUser: AuthResT;
   };
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<AuthResponse>
+  res: NextApiResponse<AuthResT>
 ) {
   const url = process.env.BACKEND_URL;
   if (!url) {
@@ -47,6 +43,7 @@ export default async function handler(
           login: { user, message },
         },
       } = (await fetcher(url, body)) as LoginResponse;
+      console.log("user in api", user);
       res.json({ user, message });
     }
   } catch (err) {

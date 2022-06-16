@@ -76,7 +76,7 @@ export default function Navbar({ headerRef }: Props) {
         </li>
 
         <li className={s.list}>
-          <Link href="#">
+          <Link href="/signIn">
             <a>
               <IUser color="icon-white" />
             </a>
