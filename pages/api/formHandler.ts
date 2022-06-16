@@ -22,7 +22,7 @@ export default async function handler(
   if (!url) {
     throw new Error("cannot find BACKEND_URL");
   }
-  const post = req.body;
+  const { post, accessToken } = req.body;
   const mutationBody = {
     query,
     variables: { post },
@@ -33,7 +33,7 @@ export default async function handler(
       data: {
         createPost: { id },
       },
-    } = (await fetcher(url, mutationBody)) as FetchResponse;
+    } = (await fetcher(url, mutationBody, accessToken)) as FetchResponse;
     res.json({ postId: id });
   } catch (err) {
     console.error("---------error---------");

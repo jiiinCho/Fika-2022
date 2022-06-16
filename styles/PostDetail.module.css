@@ -13,7 +13,7 @@
 
 .main > section:nth-child(2) {
   grid-area: meta;
-  margin-top: 2rem;
+  margin-top: 0;
 }
 
 @media (min-width: 45em) {

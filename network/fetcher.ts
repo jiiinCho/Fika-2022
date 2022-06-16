@@ -1,6 +1,11 @@
-export default async function fetcher(url: string, body: any) {
+export default async function fetcher(
+  url: string,
+  body: any,
+  accessToken?: string
+) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+  accessToken && myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
   const requestOptions = {
     method: "POST",

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,23 +16,14 @@ import s from "@styles/PostDetail.module.css";
 import imageUploader from "@network/imageUploader";
 import fetcher from "@network/fetcher";
 
-// [todo] get user info from context?
-const dummyUser = {
-  id: "62a61f8843f899f21b325a78",
-  username: "Maria Olga",
-  avatar:
-    "https://res.cloudinary.com/dwfnwjjir/image/upload/v1654935174/portrait-3_bknblw.jpg",
-};
-
-// [todo] update props
-//   type Props = {
-//       userInfo : UserT
-//   }
+import { useAuthContext } from "context/AuthContext";
+import { AuthUserT } from "@interface/index";
 
 export default function Upload() {
-  const router = useRouter();
-  const { avatar, username } = dummyUser;
+  const authService = useAuthContext();
 
+  const router = useRouter();
+  const [currUser, setCurrUser] = useState<AuthUserT | undefined>(undefined);
   const [caption, setCaption] = useState<string>("");
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,33 +32,61 @@ export default function Upload() {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const displayErrMsg = (message: string) => {
+    return toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  useEffect(() => {
+    if (authService) {
+      setCurrUser((_) => {
+        const signedUser = authService.getUser();
+        if (!signedUser) {
+          router.push("/signIn");
+        }
+        return signedUser;
+      });
+    }
+  }, [authService, currUser, router]);
+
+  const onUploadFail = () => {
+    displayErrMsg("Error while upload post, please try it again");
+    setLoading(false);
+  };
+
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!imgFile) {
-      toast.error("Please select an image file", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      displayErrMsg("Please select an image file");
       return;
-    } else {
-      setLoading(true);
-      const imgUrl = await imageUploader(imgFile);
+    }
+
+    setLoading(true);
+    const imgUrl = await imageUploader(imgFile);
+    if (currUser) {
+      const { username, avatar, id, accessToken } = currUser;
+      const user = { username, avatar, id };
       const reqBody = {
-        user: dummyUser,
-        imgUrl,
-        rating,
-        location,
-        review: caption,
+        post: {
+          user,
+          imgUrl,
+          rating,
+          location,
+          review: caption,
+        },
+        accessToken,
       };
       const { postId } = await fetcher("/api/formHandler", reqBody);
-      //[todo] update redirect to upload fail page
-      postId ? router.push(`/post/${postId}`) : router.push("/");
+      postId ? router.push(`/post/${postId}`) : onUploadFail();
     }
   };
 
@@ -88,11 +107,13 @@ export default function Upload() {
       <main className={`m-layout ${s.main}`}>
         <section className="my-auto" style={{ width: "100%" }}>
           <div className="ml-50">
-            <Avatar
-              avatar={avatar}
-              username={username}
-              textColor="text-black"
-            />
+            {currUser && (
+              <Avatar
+                avatar={currUser.avatar}
+                username={currUser.username}
+                textColor="text-black"
+              />
+            )}
           </div>
           <div className="grid mt-50">
             <div

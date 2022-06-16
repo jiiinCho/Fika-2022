@@ -61,26 +61,6 @@ export default function Login() {
   };
 
   const signUpUser = async () => {
-    if (!imgFile) {
-      displayErrMsg("Please select a profile image");
-      return;
-    }
-
-    if (context) {
-      setLoading(true);
-      const { user, message } = await context.signUp({
-        username,
-        password,
-        email,
-        imgFile,
-        isSignUp: signUp,
-      });
-      pageRouter(user, message);
-    }
-  };
-
-  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     if (username.length > 15 || username.length < 3) {
       displayErrMsg("Username must be between 3 to 15 characters");
     } else if (password.length < 5) {
@@ -98,9 +78,27 @@ export default function Login() {
     } else if (!email) {
       displayErrMsg("Email address is required");
       return;
+    } else if (!imgFile) {
+      displayErrMsg("Please select a profile image");
+      return;
     } else {
-      signUp ? signUpUser() : signInUser();
+      if (context) {
+        setLoading(true);
+        const { user, message } = await context.signUp({
+          username,
+          password,
+          email,
+          imgFile,
+          isSignUp: signUp,
+        });
+        pageRouter(user, message);
+      }
     }
+  };
+
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signUp ? signUpUser() : signInUser();
   };
 
   //[todo] uploading component

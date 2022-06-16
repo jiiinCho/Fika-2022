@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import s from "@styles/components/Navbar.module.css";
 import { IHeart, IPlus, ISearch, IUser } from "@components/icons";
+import { useAuthContext } from "context/AuthContext";
+import { AuthUserT } from "@interface/index";
 
 type Props = {
   headerRef: React.MutableRefObject<null | HTMLDivElement>;
@@ -11,6 +13,12 @@ export default function Navbar({ headerRef }: Props) {
   const navRef = useRef<HTMLDivElement>(null);
   const [headerPosY, setHeaderPosY] = useState(0);
   const [display, setDisplay] = useState(false);
+  const [currUser, setCurrUser] = useState<AuthUserT | undefined>(undefined);
+  const authService = useAuthContext();
+
+  useEffect(() => {
+    authService && setCurrUser(authService.getUser());
+  }, [authService]);
 
   const handleOnScroll = useCallback(() => {
     headerRef.current &&
@@ -61,7 +69,7 @@ export default function Navbar({ headerRef }: Props) {
         </div>
 
         <li className={s.list}>
-          <Link href="#">
+          <Link href={`${currUser ? "/upload" : "/signIn"}`}>
             <a>
               <IPlus color="icon-white" />
             </a>
