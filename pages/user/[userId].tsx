@@ -51,7 +51,7 @@ export default function UserAccout({ userData }: Props) {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [email, setEmail] = useState<string>(userData ? userData.email : "");
   const [imgFile, setImgFile] = useState<File | null>(null);
-
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const onFileUpload = () => {
     fileInputRef.current && fileInputRef.current.click();
   };
@@ -88,7 +88,9 @@ export default function UserAccout({ userData }: Props) {
         displayErrMsg(message);
       } else {
         setLoading(false);
-        toast.success("User info updated");
+        toast.success("User info updated", {
+          theme: "colored",
+        });
       }
     }
   };
@@ -124,7 +126,9 @@ export default function UserAccout({ userData }: Props) {
         accessToken: authService ? authService.getUser()!.accessToken : "",
       });
       authService && authService.logout();
+      setIsDeleted(true);
       toast.success(`${message}, redirect to main page in 5 seconds`, {
+        position: "top-center",
         theme: "colored",
       });
       setTimeout(() => {
@@ -277,6 +281,7 @@ export default function UserAccout({ userData }: Props) {
         </div>
       </form>
       <Footer />
+      {isDeleted && <div className="blocker"></div>}
     </>
   );
 }

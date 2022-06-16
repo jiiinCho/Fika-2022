@@ -567,6 +567,12 @@ label {
 .iheart-padding {
   padding: 0.5rem;
 }
+
+.blocker {
+  position: fixed;
+  inset: 0;
+  background-color: hsl(var(--clr-white) / 0.5);
+}
 @media (min-width: 45em) {
   .iheart-padding {
     padding-left: 0;
