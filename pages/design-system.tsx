@@ -7,6 +7,10 @@ import s from "@styles/DesignSystem.module.css";
 const DesignSystem: NextPage = () => {
   const inputEmpty = "";
   const inputVal = "Email@email.com";
+
+  const handleOnFilter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.key);
+  };
   return (
     <div className={s.container}>
       <Head>
@@ -297,6 +301,59 @@ const DesignSystem: NextPage = () => {
                 </div>
               </div>
             </article>
+          </div>
+        </section>
+
+        <section className="flow my-300">
+          <h2 className="ff-24 uppercase">05. Drop down</h2>
+
+          <div>
+            <div
+              className="grid"
+              style={{ maxWidth: "450px", gridTemplateColumns: "1fr" }}
+            >
+              <div
+                className="grid"
+                style={{ gridTemplateColumns: "1fr 0.7fr" }}
+              >
+                <label className="fs-16 fw-medium text-black d-block">
+                  <span className="d-block my-50 sr-only">Search by name</span>
+                  <input
+                    className={`${
+                      !inputVal && "input--empty"
+                    } input p-50 fw-regular text-black mb-25`}
+                    type="text"
+                    placeholder="Search"
+                    onKeyUp={handleOnFilter}
+                  />
+                </label>
+                <label className="fs-16 fw-medium text-black d-block">
+                  <span className="d-block my-50 sr-only">Search by name</span>
+                  <input
+                    className={`${
+                      !inputVal && "input--empty"
+                    } input p-50 fw-regular text-black mb-25`}
+                    type="text"
+                    placeholder="City"
+                    onKeyUp={handleOnFilter}
+                  />
+                </label>
+              </div>
+              <div id="location-select" className="select p-25">
+                <button
+                  value="dog"
+                  className="p-50 fw-regular text-black bg-white"
+                >
+                  Dog
+                </button>
+                <button
+                  value="cat"
+                  className="p-50 fw-regular text-black bg-white"
+                >
+                  Cat
+                </button>
+              </div>
+            </div>
           </div>
         </section>
       </main>

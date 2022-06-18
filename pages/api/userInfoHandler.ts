@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { updateUser, deleteUser } from "@network/queries";
+import { UpdateUser, DeleteUser } from "@network/queries";
 import { AuthResT } from "@interface/index";
 
 type UpdateUserInfoResponse = {
@@ -24,7 +24,7 @@ export default async function handler(
     throw new Error("cannot find BACKEND_URL");
   }
   const { user: userReq, id, accessToken } = req.body;
-  const query = userReq ? updateUser : deleteUser;
+  const query = userReq ? UpdateUser : DeleteUser;
   const body = {
     query,
     variables: { id, user: userReq },

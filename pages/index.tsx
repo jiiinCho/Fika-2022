@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { GetStaticProps } from "next";
 import { CustomHead, Navbar, Search, Post } from "@components/index";
 import client from "@network/apollo";
-import { getAllPosts } from "@network/queries";
+import { GetAllPosts as query } from "@network/queries";
 import { PostT } from "@interface/index";
 import s from "@styles/Landing.module.css";
 
@@ -14,7 +14,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const {
     data: { getAllPosts: posts },
     error,
-  } = await client.query({ query: getAllPosts });
+  } = await client.query({ query });
 
   // [TBC] Error handling
   return error ? { props: { posts: [] } } : { props: { posts } };

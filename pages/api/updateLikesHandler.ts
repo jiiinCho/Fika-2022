@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { updateLikes as query } from "@network/queries";
+import { UpdateLikes as query } from "@network/queries";
 import { PostT } from "@interface/index";
 
 type FetchResponse = {

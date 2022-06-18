@@ -93,3 +93,11 @@
     grid-column: span 4;
   }
 }
+
+.redirect {
+  position: absolute;
+  inset: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

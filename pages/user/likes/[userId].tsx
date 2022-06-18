@@ -1,12 +1,13 @@
 import { GetServerSideProps } from "next";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CustomHead, NavbarDefault, Footer, Post } from "@components/index";
 
 import { useRouter } from "next/router";
 import { PostT } from "@interface/index";
 import client from "@network/apollo";
-import { getUserById, getPostById } from "@network/queries";
+import { GetUserById, GetPostById } from "@network/queries";
 import s from "@styles/Landing.module.css";
+import Link from "next/link";
 
 type Props = {
   posts: Array<PostT>;
@@ -21,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {
       data: { getUserById: user },
       error,
-    } = await client.query({ query: getUserById, variables: { id: userId } });
+    } = await client.query({ query: GetUserById, variables: { id: userId } });
     const likedPostIdArr = user.likedPosts; // ['123', '456, '788']
     posts = await Promise.all(
       likedPostIdArr.map(async (postId: string) => {
@@ -29,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           const {
             data: { getPostById: post },
           } = await client.query({
-            query: getPostById,
+            query: GetPostById,
             variables: { id: postId },
           });
           return post;
@@ -51,19 +52,41 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function LikedPosts({ posts }: Props) {
   const router = useRouter();
+  const [likedPostList, setLikedPostList] = useState<PostT[]>(posts);
 
+  const handleOnDislike = (postId: string) => {
+    setLikedPostList((prev) => prev.filter((post) => post.id !== postId));
+  };
   useEffect(() => {
     if (!posts) {
       router.push("/signIn");
     }
   }, [router, posts]);
-
+  console.log("likedPost", likedPostList.length);
   return (
     <>
       <CustomHead />
       <NavbarDefault />
-      <main className={`m-footer ${s.main}`} style={{ marginTop: "3.8rem" }}>
-        {posts && posts.map((post) => <Post key={post.id} post={post} />)}
+      <main
+        className={`m-footer bg-white ${s.main}`}
+        style={{ marginTop: "3.8rem" }}
+      >
+        {likedPostList.length ? (
+          likedPostList.map((post) => (
+            <Post key={post.id} post={post} onDislike={handleOnDislike} />
+          ))
+        ) : (
+          <section className={`flex ${s.redirect}`}>
+            <h1 className="fs-28 fw-medium">Your list is empty</h1>
+            <div className="btn-primary uppercase">
+              <Link href="/">
+                <a style={{ textDecoration: "none", color: "inherit" }}>
+                  Go to Main page
+                </a>
+              </Link>
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </>

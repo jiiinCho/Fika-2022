@@ -14,7 +14,7 @@ import {
 import { IHeart, ILocation } from "@components/icons";
 import { PostT } from "@interface/index";
 import client from "@network/apollo";
-import { getPostByLocation, getPostById } from "@network/queries";
+import { GetPostByLocation, GetPostById } from "@network/queries";
 import s from "@styles/PostDetail.module.css";
 import { useAuthContext } from "context/AuthContext";
 
@@ -49,14 +49,14 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   try {
     const {
       data: { getPostById: post },
-    } = await client.query({ query: getPostById, variables: { id: postId } });
+    } = await client.query({ query: GetPostById, variables: { id: postId } });
     currPost = post;
 
     const locationId = post.location.id;
     const {
       data: { getPostByLocation: relatedPosts },
     } = await client.query({
-      query: getPostByLocation,
+      query: GetPostByLocation,
       variables: { locationId },
     });
     const filteredPost = relatedPosts.filter(

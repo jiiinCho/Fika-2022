@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 import { UserT } from "@interface/index";
 import client from "@network/apollo";
-import { getUserById } from "@network/queries";
+import { GetUserById } from "@network/queries";
 import fetcher from "@network/fetcher";
 import imageUploader from "@network/imageUploader";
 import { useAuthContext } from "context/AuthContext";
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {
       data: { getUserById: user },
       error,
-    } = await client.query({ query: getUserById, variables: { id: userId } });
+    } = await client.query({ query: GetUserById, variables: { id: userId } });
     userResponse = user;
   } catch (err) {
     console.error(`----------error --------- ${err}`);

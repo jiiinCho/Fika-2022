@@ -210,6 +210,7 @@ label {
 .bg-white {
   background-color: hsl(var(--clr-white));
 }
+
 .bg-primary {
   background-color: hsl(var(--clr-primary));
 }
@@ -327,7 +328,9 @@ label {
 .my-25 {
   margin: 0.25rem 0;
 }
-
+.mb-25 {
+  margin-bottom: 0.25rem;
+}
 .my-auto {
   margin-inline: auto;
 }
@@ -357,6 +360,9 @@ label {
 }
 .m-25 {
   margin: 0.25rem;
+}
+.m-0 {
+  margin: 0;
 }
 
 .ml-100 {
@@ -427,7 +433,9 @@ label {
 .fg-75 {
   --flow-space: 0.75rem;
 }
-
+.fg-50 {
+  --flow-space: 0.5rem;
+}
 .w-100 {
   width: 100%;
 }
@@ -573,6 +581,36 @@ label {
   inset: 0;
   background-color: hsl(var(--clr-white) / 0.5);
 }
+
+.select {
+  max-height: clamp(8rem, 20vw, 9.5rem);
+  overflow-y: scroll;
+  list-style-type: none;
+  position: absolute;
+  inset: 0 0 auto 0;
+  outline: none;
+  border: 1px solid hsl(var(--clr-grey) / 0.25);
+  border-radius: var(--border-radius);
+  background-color: hsl(var(--clr-white) / 0.75);
+}
+
+.select button {
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  background: transparent;
+  border-radius: var(--border-radius);
+}
+.select button:hover {
+  background-color: hsl(var(--clr-white));
+}
+.select > li:last-child {
+  margin-bottom: 0;
+}
+.select > li > button {
+  width: 100%;
+}
+
 @media (min-width: 45em) {
   .iheart-padding {
     padding-left: 0;

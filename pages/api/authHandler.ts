@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { createUser, loginUser } from "@network/queries";
+import { CreateUser, LoginUser } from "@network/queries";
 import { AuthResT } from "@interface/index";
 
 type LoginResponse = {
@@ -24,7 +24,7 @@ export default async function handler(
     throw new Error("cannot find BACKEND_URL");
   }
   const { user: userReq, isSignUp } = req.body;
-  const query = !!isSignUp ? createUser : loginUser;
+  const query = !!isSignUp ? CreateUser : LoginUser;
   const body = {
     query,
     variables: { user: userReq },

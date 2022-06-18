@@ -1,11 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { searchLocation as query } from "@network/queries";
+import { GetLocationByName, GetLocationByCity } from "@network/queries";
 import { LocationT } from "@interface/index";
 
-type FetchResponse = {
+type FetchNameResponse = {
   data: {
-    searchLocation: Array<LocationT>;
+    getLocationByName: Array<LocationT>;
+  };
+};
+
+type FetchCityResponse = {
+  data: {
+    getLocationByCity: Array<LocationT>;
   };
 };
 
@@ -21,17 +27,30 @@ export default async function handler(
   if (!url) {
     throw new Error("cannot find BACKEND_URL");
   }
-  const { business } = req.body;
-  const requestBody = {
-    query,
-    variables: { business },
-  };
+  const { business, city } = req.body;
+
+  const requestBody = business
+    ? {
+        query: GetLocationByName,
+        variables: { business },
+      }
+    : {
+        query: GetLocationByCity,
+        variables: { city },
+      };
 
   try {
-    const {
-      data: { searchLocation },
-    } = (await fetcher(url, requestBody)) as FetchResponse;
-    res.json({ locations: searchLocation }); //send the response
+    if (business) {
+      const {
+        data: { getLocationByName },
+      } = (await fetcher(url, requestBody)) as FetchNameResponse;
+      res.json({ locations: getLocationByName }); //send the response
+    } else {
+      const {
+        data: { getLocationByCity },
+      } = (await fetcher(url, requestBody)) as FetchCityResponse;
+      res.json({ locations: getLocationByCity }); //send the response
+    }
   } catch (err) {
     console.error("---------error---------");
     console.error(err);

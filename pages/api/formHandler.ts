@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetcher from "@network/fetcher";
-import { createPost as query } from "@network/queries";
+import { CreatePost as query } from "@network/queries";
 
 type FetchResponse = {
   data: {

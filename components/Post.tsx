@@ -11,9 +11,10 @@ import fetcher from "@network/fetcher";
 
 type Props = {
   post: PostT;
+  onDislike?: (postId: string) => void;
 };
 
-export default function Post({ post }: Props) {
+export default function Post({ post, onDislike }: Props) {
   const [likedPost, setLikedPost] = useState(false);
 
   const {
@@ -44,7 +45,9 @@ export default function Post({ post }: Props) {
           userId: currUser.id,
           accessToken: currUser.accessToken,
         });
+        console.log("liked response received", liked);
         setLikedPost(liked);
+        onDislike && onDislike(id);
       } else {
         router.push("/signIn");
       }
