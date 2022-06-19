@@ -339,20 +339,6 @@ const DesignSystem: NextPage = () => {
                   />
                 </label>
               </div>
-              <div id="location-select" className="select p-25">
-                <button
-                  value="dog"
-                  className="p-50 fw-regular text-black bg-white"
-                >
-                  Dog
-                </button>
-                <button
-                  value="cat"
-                  className="p-50 fw-regular text-black bg-white"
-                >
-                  Cat
-                </button>
-              </div>
             </div>
           </div>
         </section>
