@@ -70,7 +70,7 @@ export default function UserAccout({ userData }: Props) {
   };
 
   const displaySuccMsg = (message: string) => {
-    toast.success(`${message}, redirect to main page`, {
+    toast.success(message, {
       position: "top-center",
       theme: "colored",
       autoClose: 3000,
