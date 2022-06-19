@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { GetStaticProps, GetServerSideProps } from "next";
+import { GetServerSideProps } from "next";
 import {
   CustomHead,
   Navbar,
