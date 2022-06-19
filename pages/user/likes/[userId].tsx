@@ -62,7 +62,6 @@ export default function LikedPosts({ posts }: Props) {
       router.push("/signIn");
     }
   }, [router, posts]);
-  console.log("likedPost", likedPostList.length);
   return (
     <>
       <CustomHead />

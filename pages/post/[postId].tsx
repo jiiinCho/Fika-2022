@@ -24,8 +24,8 @@ import { useAuthContext } from "context/AuthContext";
 import fetcher from "@network/fetcher";
 
 type Props = {
-  currPost: PostT | undefined;
-  related: PostT[] | undefined;
+  currPost: PostT | null;
+  related: PostT[];
 };
 
 interface Params extends ParsedUrlQuery {
@@ -48,7 +48,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
 ) => {
   const { postId } = context.params!;
 
-  let currPost: PostT | undefined = undefined;
+  let currPost: PostT | null = null;
   let related: Array<PostT> = [];
 
   try {
@@ -56,21 +56,23 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
       data: { getPostById: post },
     } = await client.query({ query: GetPostById, variables: { id: postId } });
     currPost = post;
-
-    const locationId = post.location.id;
-    const {
-      data: { getPostByLocation: relatedPosts },
-    } = await client.query({
-      query: GetPostByLocation,
-      variables: { locationId },
-    });
-    const filteredPost = relatedPosts.filter(
-      (p: PostT) => p.user.id !== post.user.id
-    );
-    related = [...filteredPost].sort(
-      (a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt)
-    );
+    if (currPost) {
+      const locationId = post.location.id;
+      const {
+        data: { getPostByLocation: relatedPosts },
+      } = await client.query({
+        query: GetPostByLocation,
+        variables: { locationId },
+      });
+      const filteredPost = relatedPosts.filter(
+        (p: PostT) => p.user.id !== post.user.id
+      );
+      related = [...filteredPost].sort(
+        (a: PostT, b: PostT) => Number(b.createdAt) - Number(a.createdAt)
+      );
+    }
   } catch (err) {
+    console.log("error while fetching data in route : post/[postId]");
     console.error(err);
   } finally {
     return { props: { currPost, related }, redirect: 3 };
@@ -124,7 +126,11 @@ export default function PostDetail({ currPost: post, related }: Props) {
 
   if (!post) {
     return (
-      <NotFound message="No Post Found" redirectUrl="/" btnMsg="Refresh" />
+      <NotFound
+        message="No Post Found"
+        redirectUrl="/"
+        btnMsg="Go to main page"
+      />
     );
   } else {
     const {

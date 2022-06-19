@@ -185,7 +185,7 @@ export default function UserAccout({ userData }: Props) {
         >
           <span className="d-block ">Username</span>
           <input
-            className="input p-50 fw-regular text-black my-25"
+            className="input p-50 fw-regular text-black my-25 input-no-hover"
             type="text"
             id="username"
             name="username"

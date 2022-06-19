@@ -8,7 +8,9 @@ export default function Skeleton() {
     <>
       <CustomHead />
       <NavbarDefault />
-      <Loading />
+      <div className="blocker grid" style={{ placeItems: "center" }}>
+        <Loading />
+      </div>
       <main className={`m-layout ${s.main}`}>
         <section>
           <div className="ml-50">
@@ -96,14 +98,6 @@ export default function Skeleton() {
             Related Posts
           </h3>
           <div className={s.related}>
-            <div
-              className="bg-secondary"
-              style={{ height: "420px", width: "420px" }}
-            ></div>
-            <div
-              className="bg-secondary"
-              style={{ height: "420px", width: "420px" }}
-            ></div>
             <div
               className="bg-secondary"
               style={{ height: "420px", width: "420px" }}

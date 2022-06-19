@@ -1,5 +1,5 @@
 import React from "react";
-import { CustomHead, NavbarDefault } from "@components/index";
+import { CustomHead, NavbarDefault, Loading } from "@components/index";
 import { IHeart, ILocation } from "@components/icons";
 import s from "@styles/components/Skeleton.module.css";
 
@@ -8,6 +8,9 @@ export default function Skeleton() {
     <>
       <CustomHead />
       <NavbarDefault />
+      <div className="blocker grid" style={{ placeItems: "center" }}>
+        <Loading />
+      </div>
       <main className={`m-layout ${s.main}`}>
         <section>
           <div className="ml-50">
@@ -95,14 +98,6 @@ export default function Skeleton() {
             Related Posts
           </h3>
           <div className={s.related}>
-            <div
-              className="bg-secondary"
-              style={{ height: "420px", width: "420px" }}
-            ></div>
-            <div
-              className="bg-secondary"
-              style={{ height: "420px", width: "420px" }}
-            ></div>
             <div
               className="bg-secondary"
               style={{ height: "420px", width: "420px" }}

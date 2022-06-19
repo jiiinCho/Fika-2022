@@ -210,7 +210,9 @@ label {
 .bg-white {
   background-color: hsl(var(--clr-white));
 }
-
+.bg-white-95 {
+  background-color: hsl(var(--clr-white) / 0.95);
+}
 .bg-primary {
   background-color: hsl(var(--clr-primary));
 }
@@ -498,6 +500,9 @@ label {
 .input:focus,
 .input:hover {
   background-color: hsl(var(--clr-secondary));
+}
+.input-no-hover:hover {
+  background-color: hsl(var(--clr-white));
 }
 .input::placeholder {
   color: hsl(var(--clr-primary) / 0.6);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ISearch, ILocation } from "@components/icons";
+import { NotFound, Footer } from "@components/index";
 import { useRouter } from "next/router";
 import fetcher from "@network/fetcher";
 import { LocationT } from "@interface/index";
@@ -11,6 +12,7 @@ export default function Search() {
   const [city, setCity] = useState<string>("");
   const [locationMeta, setLocationMeta] = useState<LocationT[]>([]);
   const [metaIndex, setMetaIndex] = useState<number>(0);
+  const [error, setError] = useState<boolean>(false);
 
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -77,12 +79,21 @@ export default function Search() {
           });
           break;
         case "Enter":
-          router.push(`/search/${locationId}`);
+          locationId ? router.push(`/search/${locationId}`) : setError(true);
           break;
       }
     },
     [locationMeta, onMetaSelect, locationId, router]
   );
+
+  const onReset = () => {
+    setError(false);
+    setBusiness("");
+    setCity("");
+    setLocationId("");
+    setLocationMeta([]);
+    setMetaIndex(0);
+  };
 
   useEffect(() => {
     const formRefInstance = formRef.current;
@@ -109,6 +120,19 @@ export default function Search() {
       });
     }
   }, [business]);
+
+  if (error) {
+    return (
+      <div className={`bg-white-95 ${s.alert}`}>
+        <div className="grid">
+          <h1 className="fs-28 fw-medium my-100">{`Sorry, we couldn't find "${business}"`}</h1>
+          <button className="btn-primary uppercase" onClick={onReset}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form ref={formRef} className={s.form}>

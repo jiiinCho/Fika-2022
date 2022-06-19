@@ -53,3 +53,12 @@
 .btn[aria-pressed="true"] {
   background-color: hsl(53 28% 95% / 0.85);
 }
+
+.alert {
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+}
