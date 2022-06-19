@@ -63,7 +63,7 @@ export default function Navbar() {
         </li>
 
         <li className={s.list}>
-          <Link href={`${currUser ? `/user/likes/${currUser.id}` : "/signIn"}`}>
+          <Link href={`${currUser ? `/likes/${currUser.id}` : "/signIn"}`}>
             <a>
               <IHeart />
             </a>

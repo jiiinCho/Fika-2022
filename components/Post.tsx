@@ -47,6 +47,7 @@ export default function Post({ post, onDislike }: Props) {
         });
         setLikedPost(liked);
         onDislike && onDislike(id);
+        //[TODO] because there is no getUser api
         currUser.likedPosts = liked
           ? [...currUser.likedPosts, id]
           : currUser.likedPosts.filter((pid) => pid !== id);

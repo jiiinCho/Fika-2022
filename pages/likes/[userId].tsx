@@ -16,12 +16,10 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { params } = context;
   const { userId } = params!;
-
   let posts: Array<PostT> = [];
   try {
     const {
       data: { getUserById: user },
-      error,
     } = await client.query({ query: GetUserById, variables: { id: userId } });
     const likedPostIdArr = user.likedPosts; // ['123', '456, '788']
     posts = await Promise.all(

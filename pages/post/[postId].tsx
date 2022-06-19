@@ -86,6 +86,10 @@ export default function PostDetail({ currPost: post, related }: Props) {
   const [likedPost, setLikedPost] = useState<boolean>(false);
   const [likesCount, setLikesCount] = useState<number>(post ? post.likes : 0);
 
+  useEffect(() => {
+    post && setLikesCount(post.likes);
+  }, [post]);
+
   const handleOnLikes = async () => {
     if (authService) {
       const currUser = authService.getUser();

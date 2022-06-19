@@ -90,7 +90,7 @@ export default function Navbar({ headerRef }: Props) {
           </Link>
         </li>
         <li className={s.list}>
-          <Link href={`${currUser ? `/user/likes/${currUser.id}` : "/signIn"}`}>
+          <Link href={`${currUser ? `/likes/${currUser.id}` : "/signIn"}`}>
             <a>
               <IHeart color="icon-white" />
             </a>

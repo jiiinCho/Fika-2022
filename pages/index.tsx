@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { GetStaticProps } from "next";
+import { GetStaticProps, GetServerSideProps } from "next";
 import {
   CustomHead,
   Navbar,
@@ -17,7 +17,7 @@ type Props = {
   posts: PostT[];
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   let posts = [];
 
   try {
@@ -32,7 +32,6 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         posts,
       },
-      revalidate: 3,
     };
   }
 };
