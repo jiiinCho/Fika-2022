@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Link from "next/link";
+
 import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -7,6 +9,8 @@ import { useRouter } from "next/router";
 import {
   CustomHead,
   NavbarDefault,
+  NotFound,
+  Skeleton,
   Avatar,
   Review,
   Post,
@@ -17,6 +21,7 @@ import client from "@network/apollo";
 import { GetPostByLocation, GetPostById } from "@network/queries";
 import s from "@styles/PostDetail.module.css";
 import { useAuthContext } from "context/AuthContext";
+import fetcher from "@network/fetcher";
 
 type Props = {
   currPost: PostT | undefined;
@@ -68,7 +73,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   } catch (err) {
     console.error(err);
   } finally {
-    return { props: { currPost, related } };
+    return { props: { currPost, related }, redirect: 3 };
   }
 };
 
@@ -77,6 +82,31 @@ export default function PostDetail({ currPost: post, related }: Props) {
   const authService = useAuthContext();
 
   const [likedPost, setLikedPost] = useState<boolean>(false);
+  const [likesCount, setLikesCount] = useState<number>(post ? post.likes : 0);
+
+  const handleOnLikes = async () => {
+    if (authService) {
+      const currUser = authService.getUser();
+      if (currUser && post) {
+        const { post: postRes, liked } = await fetcher(
+          "/api/updateLikesHandler",
+          {
+            postId: post.id,
+            userId: currUser.id,
+            accessToken: currUser.accessToken,
+          }
+        );
+        setLikedPost(liked);
+        setLikesCount(postRes.likes);
+        //[todo] implement getUser api
+        currUser.likedPosts = liked
+          ? [...currUser.likedPosts, post.id]
+          : currUser.likedPosts.filter((pid) => pid !== post.id);
+      } else {
+        router.push("/signIn");
+      }
+    }
+  };
 
   useEffect(() => {
     if (authService) {
@@ -89,18 +119,18 @@ export default function PostDetail({ currPost: post, related }: Props) {
   }, [authService, post]);
 
   if (router.isFallback) {
-    //[todo] make skeleton component
-    return <h1>Loading Page...</h1>;
+    return <Skeleton />;
   }
 
   if (!post) {
-    //[todo] make no list found page
-    return <h1>No List Found, return to Home</h1>;
+    return (
+      <NotFound message="No Post Found" redirectUrl="/" btnMsg="Refresh" />
+    );
   } else {
     const {
       id,
       user: { username, avatar },
-      location: { business, street, city, country },
+      location: { business, street, city, country, id: locationId },
       imgUrl,
       createdAt,
       review,
@@ -131,17 +161,23 @@ export default function PostDetail({ currPost: post, related }: Props) {
               />
             </div>
             <div className="meta">
-              <IHeart
-                padding="iheart-padding"
-                color={`${likedPost && "icon-primary"}`}
-              />
-              <p>{likes} Likes</p>
+              <button className="btn-reset flex" onClick={handleOnLikes}>
+                <IHeart
+                  padding="iheart-padding"
+                  color={`${likedPost ? "icon-primary" : "icon-default"}`}
+                />
+              </button>
+              <p>{likesCount} Likes</p>
             </div>
           </section>
 
           <section>
             <div className="meta">
-              <ILocation />
+              <Link href={`/search/${locationId}`}>
+                <a>
+                  <ILocation />
+                </a>
+              </Link>
               <div>
                 <p>{business}</p>
                 <p className="fs-14 mt-25 fw-light">

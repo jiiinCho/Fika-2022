@@ -14,6 +14,7 @@ export default function Search() {
 
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const onFilter = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let variable = undefined;
@@ -96,12 +97,26 @@ export default function Search() {
     };
   }, [handleKeyDown]);
 
+  useEffect(() => {
+    const currBusinessName = business.split(",")[0];
+    if (listRef.current) {
+      const arr = listRef.current.childNodes;
+      arr.forEach((listElem) => {
+        const btnElem = listElem.firstChild as HTMLButtonElement;
+        btnElem.value === currBusinessName
+          ? btnElem.setAttribute("aria-pressed", "true")
+          : btnElem.setAttribute("aria-pressed", "false");
+      });
+    }
+  }, [business]);
+
   return (
     <form ref={formRef} className={s.form}>
       <label className="input input-search flex">
         <span className="sr-only">Search Cafe by name</span>
         <ISearch color="icon-primary" />
         <input
+          autoComplete="off"
           className={`fw-regular fs-16 text-accent ${s.input}`}
           type="text"
           placeholder="Search"
@@ -114,6 +129,7 @@ export default function Search() {
         <span className="sr-only">Search by location</span>
         <ILocation color="icon-primary" />
         <input
+          autoComplete="off"
           className={`fw-regular fs-16 text-accent ${s.input}`}
           type="text"
           placeholder="City"
@@ -124,15 +140,16 @@ export default function Search() {
       </label>
       <div style={{ position: "relative" }}>
         {!!locationMeta.length && (
-          <ul className="select p-25 m-0">
+          <ul ref={listRef} className="select p-25 m-0">
             {locationMeta.map((meta) => {
               const { id, business, street, city } = meta;
               return (
                 <li key={id} className="mb-25">
                   <button
-                    type="button"
+                    aria-pressed="false"
                     value={business}
-                    className="p-50 fw-regular text-black"
+                    type="button"
+                    className={`p-50 fw-regular text-black ${s.btn}`}
                     onClick={() => onMetaSelect(id)}
                   >
                     {business}, {street}, {city}

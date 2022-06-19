@@ -6,9 +6,17 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+.navDefault {
+  height: 3.5rem;
+}
+
 @media (min-width: 45em) {
   .nav {
     padding: 0.5rem;
+  }
+  .navDefault {
+    height: 4.25rem;
+    padding: 0 0.5rem;
   }
 }
 
@@ -46,4 +54,14 @@
   align-items: center;
   transform: translateY(120%);
   transition: transform 420ms ease-in;
+}
+
+.searcher {
+  display: none;
+}
+
+@media (min-width: 45em) {
+  .searcher {
+    display: flex;
+  }
 }

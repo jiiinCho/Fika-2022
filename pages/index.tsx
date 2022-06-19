@@ -1,6 +1,13 @@
 import React, { useRef } from "react";
 import { GetStaticProps } from "next";
-import { CustomHead, Navbar, Search, Post } from "@components/index";
+import {
+  CustomHead,
+  Navbar,
+  Search,
+  Post,
+  NotFound,
+  Footer,
+} from "@components/index";
 import client from "@network/apollo";
 import { GetAllPosts as query } from "@network/queries";
 import { PostT } from "@interface/index";
@@ -11,21 +18,32 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const {
-    data: { getAllPosts: posts },
-    error,
-  } = await client.query({ query });
+  let posts = [];
 
-  // [TBC] Error handling
-  return error ? { props: { posts: [] } } : { props: { posts } };
+  try {
+    const {
+      data: { getAllPosts },
+    } = await client.query({ query });
+    posts = !!getAllPosts.length && getAllPosts;
+  } catch (err) {
+    console.error(`----------error --------- ${err}`);
+  } finally {
+    return {
+      props: {
+        posts,
+      },
+      revalidate: 3,
+    };
+  }
 };
 
 export default function Landing({ posts }: Props) {
   const headerRef = useRef(null);
 
   if (!posts) {
-    //[todo] make no list found page
-    return <h1>No List Found, return to Home</h1>;
+    return (
+      <NotFound message="No Post Found" redirectUrl="/" btnMsg="Refresh" />
+    );
   }
 
   return (
@@ -63,11 +81,12 @@ export default function Landing({ posts }: Props) {
         </div>
       </header>
 
-      <main className={s.main}>
+      <main className={`m-footer ${s.main}`}>
         {posts.map((post) => (
           <Post key={post.id} post={post} />
         ))}
       </main>
+      <Footer />
     </div>
   );
 }

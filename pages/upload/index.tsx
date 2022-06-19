@@ -9,6 +9,7 @@ import {
   Caption,
   NavbarDefault,
   Location,
+  Loading,
   Rating,
 } from "@components/index";
 import { LocationT } from "@interface/index";
@@ -94,16 +95,16 @@ export default function Upload() {
     fileInputRef.current && fileInputRef.current.click();
   };
 
-  //[todo] uploading component
-  if (loading) {
-    return <h1>Uploading...</h1>;
-  }
-
   return (
     <>
       <ToastContainer />
       <CustomHead />
       <NavbarDefault />
+      {loading && (
+        <main className="blocker grid" style={{ placeItems: "center" }}>
+          <Loading />
+        </main>
+      )}
       <main className={`m-layout ${s.main}`}>
         <section className="my-auto" style={{ width: "100%" }}>
           <div className="ml-50">

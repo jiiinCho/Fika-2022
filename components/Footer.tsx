@@ -10,7 +10,7 @@ export default function Footer() {
           jiiin.cho.dev
         </a>
       </p>
-      <p className="fs-14 fw-light">&#169;2022 FIKA All rights reserved.</p>
+      <p className="fs-14 fw-light">&#169;2022 FIKA. All rights reserved.</p>
     </div>
   );
 }

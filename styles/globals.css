@@ -338,7 +338,7 @@ label {
 .m-layout {
   width: 100%;
   max-width: 960px;
-  margin-top: clamp(4rem, 10vh, 5rem);
+  margin-top: clamp(4rem, 20vw, 5.5rem);
   margin-inline: auto;
 }
 

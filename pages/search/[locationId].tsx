@@ -47,10 +47,7 @@ export default function PostByLocationId({ posts }: Props) {
     <>
       <CustomHead />
       <NavbarDefault />
-      <main
-        className={`m-footer bg-white ${s.main}`}
-        style={{ marginTop: "3.8rem" }}
-      >
+      <main className={`m-footer bg-white ${s.main} ${s.searchResult}`}>
         {posts.length ? (
           posts.map((post) => <Post key={post.id} post={post} />)
         ) : (

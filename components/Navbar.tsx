@@ -24,6 +24,13 @@ export default function Navbar({ headerRef }: Props) {
       setHeaderPosY(headerRef.current.getBoundingClientRect().y);
   }, [headerRef]);
 
+  const onSearchBtnClick = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
   useEffect(() => {
     window.addEventListener("scroll", handleOnScroll, { passive: true });
     return () => {
@@ -59,11 +66,19 @@ export default function Navbar({ headerRef }: Props) {
       <ul className="flex">
         <div className={s.iconWrapper}>
           <li className={`${display ? s.appear : s.disappear}`}>
-            <Link href="#">
-              <a>
-                <ISearch color="icon-white" />
-              </a>
-            </Link>
+            <button
+              style={{
+                lineHeight: 0,
+                padding: 0,
+                margin: 0,
+                border: "none",
+                background: "transparent",
+              }}
+              type="button"
+              onClick={onSearchBtnClick}
+            >
+              <ISearch color="icon-white" />
+            </button>
           </li>
         </div>
 

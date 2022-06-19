@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { CustomHead, NavbarDefault, Footer } from "@components/index";
+import { CustomHead, NavbarDefault, Footer, Loading } from "@components/index";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useRouter } from "next/router";
@@ -101,15 +101,16 @@ export default function Login() {
     signUp ? signUpUser() : signInUser();
   };
 
-  //[todo] uploading component
-  if (loading) {
-    return <h1>Log In...</h1>;
-  }
   return (
     <>
       <ToastContainer />
       <CustomHead />
       <NavbarDefault />
+      {loading && (
+        <main className="blocker grid" style={{ placeItems: "center" }}>
+          <Loading />
+        </main>
+      )}
       <form
         className="m-layout grid m-footer"
         style={{ placeItems: "center" }}

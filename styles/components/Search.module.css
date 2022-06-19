@@ -1,11 +1,12 @@
 .form {
   display: grid;
   width: 500px;
-  grid-template-columns: 1fr 0.25rem 0.7fr;
+  grid-template-columns: 1.3fr 0.25rem 0.7fr;
   grid-template-areas: "search . location";
 }
 
 .form > label:first-child {
+  max-width: 100%;
   grid-area: search;
 }
 .form > label:nth-child(2) {
@@ -21,10 +22,6 @@
 .form input {
   line-height: 1.4;
 }
-/* .form > div {
-  grid-area: dropdown;
-  grid-column: span 2;
-} */
 
 @media (max-width: 35em) {
   .form {
@@ -51,4 +48,8 @@
 .input:foucs,
 .input:active {
   outline: none;
+}
+
+.btn[aria-pressed="true"] {
+  background-color: hsl(53 28% 95% / 0.85);
 }

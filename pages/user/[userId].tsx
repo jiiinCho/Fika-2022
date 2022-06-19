@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import React, { useState, useRef, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { CustomHead, NavbarDefault, Footer } from "@components/index";
+import { CustomHead, NavbarDefault, Footer, Loading } from "@components/index";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useRouter } from "next/router";
@@ -69,6 +69,18 @@ export default function UserAccout({ userData }: Props) {
     });
   };
 
+  const displaySuccMsg = (message: string) => {
+    toast.success(`${message}, redirect to main page`, {
+      position: "top-center",
+      theme: "colored",
+      autoClose: 3000,
+    });
+    setTimeout(() => {
+      setLoading(false);
+      router.push("/");
+    }, 3000);
+  };
+
   const fetchUpdate = async () => {
     setLoading(true);
     if (userData) {
@@ -127,14 +139,14 @@ export default function UserAccout({ userData }: Props) {
       });
       authService && authService.logout();
       setIsDeleted(true);
-      toast.success(`${message}, redirect to main page in 5 seconds`, {
-        position: "top-center",
-        theme: "colored",
-      });
-      setTimeout(() => {
-        router.push("/");
-      }, 5000);
+      displaySuccMsg(message);
     }
+  };
+
+  const handleOnLogout = async () => {
+    authService && authService.logout();
+    setLoading(true);
+    displaySuccMsg("Logout success");
   };
 
   useEffect(() => {
@@ -148,16 +160,16 @@ export default function UserAccout({ userData }: Props) {
     }
   }, [router, userData]);
 
-  //[todo] uploading component
-  if (loading) {
-    return <h1>Log In...</h1>;
-  }
-
   return (
     <>
       <ToastContainer />
       <CustomHead />
       <NavbarDefault />
+      {loading && (
+        <main className="blocker grid" style={{ placeItems: "center" }}>
+          <Loading />
+        </main>
+      )}
       <form
         className="m-layout grid m-footer"
         style={{ placeItems: "center" }}
@@ -277,6 +289,13 @@ export default function UserAccout({ userData }: Props) {
             onClick={handleOnDelete}
           >
             Delete
+          </button>
+          <button
+            type="button"
+            className="btn-secondary uppercase"
+            onClick={handleOnLogout}
+          >
+            Logout
           </button>
         </div>
       </form>

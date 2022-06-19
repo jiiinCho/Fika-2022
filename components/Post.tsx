@@ -45,9 +45,11 @@ export default function Post({ post, onDislike }: Props) {
           userId: currUser.id,
           accessToken: currUser.accessToken,
         });
-        console.log("liked response received", liked);
         setLikedPost(liked);
         onDislike && onDislike(id);
+        currUser.likedPosts = liked
+          ? [...currUser.likedPosts, id]
+          : currUser.likedPosts.filter((pid) => pid !== id);
       } else {
         router.push("/signIn");
       }
