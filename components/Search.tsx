@@ -53,6 +53,14 @@ export default function Search() {
     [locationMeta]
   );
 
+  const onSubmit = useCallback(
+    (locationId: string) => {
+      onReset();
+      locationId ? router.push(`/search/${locationId}`) : setError(true);
+    },
+    [router]
+  );
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
@@ -79,11 +87,11 @@ export default function Search() {
           });
           break;
         case "Enter":
-          locationId ? onSubmit() : setError(true);
+          onSubmit(locationId);
           break;
       }
     },
-    [locationMeta, onMetaSelect, locationId, router]
+    [locationMeta, onMetaSelect, locationId, onSubmit]
   );
 
   const onReset = () => {
@@ -95,10 +103,6 @@ export default function Search() {
     setMetaIndex(0);
   };
 
-  const onSubmit = () => {
-    onReset();
-    router.push(`/search/${locationId}`);
-  };
   useEffect(() => {
     const formRefInstance = formRef.current;
     if (formRefInstance) {

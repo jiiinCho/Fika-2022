@@ -1,16 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
 
-import {
-  CustomHead,
-  NavbarDefault,
-  Footer,
-  Post,
-  Loading,
-} from "@components/index";
+import { CustomHead, NavbarDefault, Footer, Post } from "@components/index";
 import { PostT } from "@interface/index";
 import getPostByLocation from "@network/post/get-post-by-location";
 import { getConfig } from "@network/common/config";
@@ -61,22 +55,20 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
 };
 
 export default function PostByLocationId({ posts }: Props) {
-  const [updating, setUpdating] = useState<boolean>(false);
   const router = useRouter();
   if (router.isFallback) {
-    setUpdating(true);
+    return <h1>Searching...</h1>;
+  }
+
+  if (!posts) {
+    return <h1>oops, no result found</h1>;
   }
   return (
     <>
-      {updating && (
-        <div className="blocker grid" style={{ placeItems: "center" }}>
-          <Loading />
-        </div>
-      )}
       <CustomHead />
       <NavbarDefault />
       <main className={`m-footer bg-white ${s.main} ${s.searchResult}`}>
-        {posts ? (
+        {posts.length ? (
           posts.map((post) => <Post key={post.id} post={post} />)
         ) : (
           <section className={`flex ${s.redirect}`}>
