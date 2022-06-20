@@ -14,6 +14,20 @@ export const GetAllPosts = gql`
   }
 `;
 
+export const GetAllPostsNoGql = `
+  query GetAllPost {
+    getAllPosts {
+      id
+      user {
+        id
+        username
+        avatar
+      }
+      imgUrl
+    }
+  }
+`;
+
 export const GetPostById = gql`
   query GetPostById($id: ID) {
     getPostById(id: $id) {

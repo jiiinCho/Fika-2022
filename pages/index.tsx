@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import {
   CustomHead,
   Navbar,
@@ -8,23 +8,20 @@ import {
   NotFound,
   Footer,
 } from "@components/index";
-import client from "@network/apollo";
-import { GetAllPosts as query } from "@network/queries";
 import { PostT } from "@interface/index";
 import s from "@styles/Landing.module.css";
+import { getConfig } from "@network/common/config";
+import getAllPosts from "@network/post/get-all-posts";
 
 type Props = {
   posts: PostT[];
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  let posts = [];
-
+export const getStaticProps: GetStaticProps = async () => {
+  const config = getConfig();
+  let posts: PostT[] = [];
   try {
-    const {
-      data: { getAllPosts },
-    } = await client.query({ query });
-    posts = !!getAllPosts.length && getAllPosts;
+    posts = await getAllPosts(config);
   } catch (err) {
     console.error(`----------error --------- ${err}`);
   } finally {
@@ -32,6 +29,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       props: {
         posts,
       },
+      revalidate: 1,
     };
   }
 };
