@@ -76,7 +76,7 @@ export default function PostByLocationId({ posts }: Props) {
       <CustomHead />
       <NavbarDefault />
       <main className={`m-footer bg-white ${s.main} ${s.searchResult}`}>
-        {posts.length ? (
+        {posts ? (
           posts.map((post) => <Post key={post.id} post={post} />)
         ) : (
           <section className={`flex ${s.redirect}`}>
