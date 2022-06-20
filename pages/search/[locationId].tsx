@@ -1,36 +1,53 @@
-import React from "react";
-import { GetServerSideProps } from "next";
+import React, { useState } from "react";
+import { GetStaticProps, GetStaticPaths } from "next";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import client from "@network/apollo";
-import { CustomHead, NavbarDefault, Footer, Post } from "@components/index";
+import { ParsedUrlQuery } from "querystring";
+
+import {
+  CustomHead,
+  NavbarDefault,
+  Footer,
+  Post,
+  Loading,
+} from "@components/index";
 import { PostT } from "@interface/index";
-import { GetPostByLocation } from "@network/queries";
+import getPostByLocation from "@network/post/get-post-by-location";
+import { getConfig } from "@network/common/config";
 import s from "@styles/Landing.module.css";
 
 type Props = {
   posts: PostT[];
 };
+interface Params extends ParsedUrlQuery {
+  locationId: string;
+}
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { locationId: "62a86842ec2ea09a5ce72ae5" } },
+      { params: { locationId: "62a8690eec2ea09a5ce72aea" } },
+      { params: { locationId: "62a86958ec2ea09a5ce72aed" } },
+      { params: { locationId: "62a8b14408e30fc88e77c574" } },
+    ],
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props, Params> = async (
+  context
+) => {
   const { locationId } = context.params!;
+  const config = getConfig();
 
   let posts: PostT[] = [];
-  if (!locationId) {
-    return {
-      props: {
-        posts,
-      },
-    };
-  }
-
   try {
-    const {
-      data: { getPostByLocation },
-    } = await client.query({
-      query: GetPostByLocation,
+    const options = {
+      config,
       variables: { locationId },
-    });
-    posts = getPostByLocation as PostT[];
+    };
+    posts = await getPostByLocation(options);
   } catch (err) {
     console.error(`----------error --------- ${err}`);
   } finally {
@@ -38,13 +55,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         posts,
       },
+      revalidate: 3,
     };
   }
 };
 
 export default function PostByLocationId({ posts }: Props) {
+  const [updating, setUpdating] = useState<boolean>(false);
+  const router = useRouter();
+  if (router.isFallback) {
+    setUpdating(true);
+  }
   return (
     <>
+      {updating && (
+        <div className="blocker grid" style={{ placeItems: "center" }}>
+          <Loading />
+        </div>
+      )}
       <CustomHead />
       <NavbarDefault />
       <main className={`m-footer bg-white ${s.main} ${s.searchResult}`}>

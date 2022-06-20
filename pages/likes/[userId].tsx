@@ -1,42 +1,46 @@
 import { GetServerSideProps } from "next";
 import React, { useState, useEffect } from "react";
-import { CustomHead, NavbarDefault, Footer, Post } from "@components/index";
-
-import { useRouter } from "next/router";
-import { PostT } from "@interface/index";
-import client from "@network/apollo";
-import { GetUserById, GetPostById } from "@network/queries";
-import s from "@styles/Landing.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
+
+import { CustomHead, NavbarDefault, Footer, Post } from "@components/index";
+import { PostT } from "@interface/index";
+import getUserById from "@network/user/get-user-by-id";
+import { getConfig } from "@network/common/config";
+import getPostById from "@network/post/get-post-by-id";
+import s from "@styles/Landing.module.css";
 
 type Props = {
   posts: Array<PostT>;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { params } = context;
-  const { userId } = params!;
-  let posts: Array<PostT> = [];
+interface Params extends ParsedUrlQuery {
+  userId: string;
+}
+
+export const getServerSideProps: GetServerSideProps<Props, Params> = async (
+  context
+) => {
+  const { userId } = context.params!;
+  const config = getConfig();
+
+  let posts: PostT[] = [];
+
   try {
-    const {
-      data: { getUserById: user },
-    } = await client.query({ query: GetUserById, variables: { id: userId } });
-    const likedPostIdArr = user.likedPosts; // ['123', '456, '788']
-    posts = await Promise.all(
-      likedPostIdArr.map(async (postId: string) => {
-        try {
-          const {
-            data: { getPostById: post },
-          } = await client.query({
-            query: GetPostById,
-            variables: { id: postId },
-          });
-          return post;
-        } catch (err) {
-          console.error(err);
-        }
-      })
-    );
+    const options = {
+      config,
+      variables: { id: userId },
+    };
+    const user = await getUserById(options);
+    if (user) {
+      const likedPostIdArr = user.likedPosts; // ['123', '456, '788']
+      posts = await Promise.all(
+        likedPostIdArr.map(async (postId: string) => {
+          return await getPostById({ config, variables: { id: postId } });
+        })
+      );
+    }
   } catch (err) {
     console.error(`----------error --------- ${err}`);
   } finally {

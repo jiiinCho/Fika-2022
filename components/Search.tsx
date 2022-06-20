@@ -79,7 +79,7 @@ export default function Search() {
           });
           break;
         case "Enter":
-          locationId ? router.push(`/search/${locationId}`) : setError(true);
+          locationId ? onSubmit() : setError(true);
           break;
       }
     },
@@ -95,6 +95,10 @@ export default function Search() {
     setMetaIndex(0);
   };
 
+  const onSubmit = () => {
+    onReset();
+    router.push(`/search/${locationId}`);
+  };
   useEffect(() => {
     const formRefInstance = formRef.current;
     if (formRefInstance) {

@@ -9,6 +9,12 @@ export type PostT = {
   rating: number;
 };
 
+export type UserInfoT = UserT & {
+  password: string;
+  email: string;
+  likedPosts: string[];
+};
+
 export type UserT = {
   id: string;
   username: string;

@@ -5,32 +5,26 @@ import { CustomHead, NavbarDefault, Footer, Loading } from "@components/index";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useRouter } from "next/router";
-import { UserT } from "@interface/index";
-import client from "@network/apollo";
-import { GetUserById } from "@network/queries";
+import { UserInfoT } from "@interface/index";
 import fetcher from "@network/fetcher";
 import imageUploader from "@network/imageUploader";
 import { useAuthContext } from "context/AuthContext";
+import getUserById from "@network/user/get-user-by-id";
+import { getConfig } from "@network/common/config";
 
-type UserAPIResponse = {
-  password: string;
-  email: string;
-  id: string;
-};
 type Props = {
-  userData: (UserT & UserAPIResponse) | null;
+  userData: UserInfoT | null;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { params } = context;
-  const { userId } = params!;
+  const { userId } = context.params!;
+  const config = getConfig();
   let userResponse = null;
   try {
-    const {
-      data: { getUserById: user },
-      error,
-    } = await client.query({ query: GetUserById, variables: { id: userId } });
-    userResponse = user;
+    if (userId) {
+      const options = { config, variables: { id: userId } };
+      userResponse = await getUserById(options);
+    }
   } catch (err) {
     console.error(`----------error --------- ${err}`);
   } finally {

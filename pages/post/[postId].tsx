@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
-
-import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
 
 import {
   CustomHead,
@@ -17,11 +16,12 @@ import {
 } from "@components/index";
 import { IHeart, ILocation } from "@components/icons";
 import { PostT } from "@interface/index";
-import client from "@network/apollo";
-import { GetPostByLocation, GetPostById } from "@network/queries";
-import s from "@styles/PostDetail.module.css";
 import { useAuthContext } from "context/AuthContext";
 import fetcher from "@network/fetcher";
+import getPostById from "@network/post/get-post-by-id";
+import { getConfig } from "@network/common/config";
+import getPostByLocation from "@network/post/get-post-by-location";
+import s from "@styles/PostDetail.module.css";
 
 type Props = {
   currPost: PostT | null;
@@ -47,24 +47,25 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   context
 ) => {
   const { postId } = context.params!;
+  const config = getConfig();
 
   let currPost: PostT | null = null;
-  let related: Array<PostT> = [];
+  let related: PostT[] = [];
 
   try {
-    const {
-      data: { getPostById: post },
-    } = await client.query({ query: GetPostById, variables: { id: postId } });
+    const options = {
+      config,
+      variables: { id: postId },
+    };
+    const post = await getPostById(options);
     currPost = post;
-    if (currPost) {
-      const locationId = post.location.id;
-      const {
-        data: { getPostByLocation: relatedPosts },
-      } = await client.query({
-        query: GetPostByLocation,
-        variables: { locationId },
-      });
-      const filteredPost = relatedPosts.filter(
+    if (post) {
+      const locationOptions = {
+        config,
+        variables: { locationId: post.location.id },
+      };
+      const postsByLocation = await getPostByLocation(locationOptions);
+      const filteredPost = postsByLocation.filter(
         (p: PostT) => p.user.id !== post.user.id
       );
       related = [...filteredPost].sort(
