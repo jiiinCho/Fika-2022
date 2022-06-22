@@ -56,7 +56,7 @@ export default function Upload() {
         return signedUser;
       });
     }
-  }, [authService, currUser, router]);
+  }, [authService, router]);
 
   const onUploadFail = () => {
     displayErrMsg("Error while upload post, please try it again");

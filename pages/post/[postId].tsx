@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
     console.log("error while fetching data in route : post/[postId]");
     console.error(err);
   } finally {
-    return { props: { currPost, related }, redirect: 3 };
+    return { props: { currPost, related }, revalidate: 3 };
   }
 };
 
