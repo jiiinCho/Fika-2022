@@ -99,6 +99,18 @@ body {
   position: relative;
 }
 
+ul::-webkit-scrollbar {
+  width: 6px; /* width of the entire scrollbar */
+}
+
+ul::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
+
+ul::-webkit-scrollbar-thumb {
+  background: hsl(var(--clr-white) / 0.75); /* color of the tracking area */
+}
+
 img,
 picture {
   max-width: 100%;

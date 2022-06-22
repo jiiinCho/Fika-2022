@@ -75,10 +75,22 @@ export default function UserAccout({ userData }: Props) {
     }, 3000);
   };
 
+  const getCurrAccessToken = async (): Promise<string> => {
+    let accessToken = "";
+    if (authService) {
+      const currUser = await authService.getUser();
+      if (currUser) {
+        accessToken = currUser.accessToken;
+      }
+    }
+    return accessToken;
+  };
+
   const fetchUpdate = async () => {
     setLoading(true);
     if (userData) {
       const imgUrl = imgFile ? await imageUploader(imgFile) : userData.avatar;
+
       const { user, message } = await fetcher("/api/userInfoHandler", {
         user: {
           username: userData.username,
@@ -87,7 +99,7 @@ export default function UserAccout({ userData }: Props) {
           avatar: imgUrl,
         },
         id: userData.id,
-        accessToken: authService ? authService.getUser()!.accessToken : "",
+        accessToken: await getCurrAccessToken(),
       });
       if (!user) {
         setLoading(false);
@@ -129,7 +141,7 @@ export default function UserAccout({ userData }: Props) {
     if (userData) {
       const { message } = await fetcher("/api/userInfoHandler", {
         id: userData.id,
-        accessToken: authService ? authService.getUser()!.accessToken : "",
+        accessToken: await getCurrAccessToken(),
       });
       authService && authService.logout();
       setIsDeleted(true);

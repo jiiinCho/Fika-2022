@@ -47,15 +47,17 @@ export default function Upload() {
   };
 
   useEffect(() => {
-    if (authService) {
-      setCurrUser((_) => {
-        const signedUser = authService.getUser();
-        if (!signedUser) {
+    async function fetchAuth() {
+      if (authService) {
+        const signedUser = await authService.getUser();
+        if (signedUser) {
+          setCurrUser(signedUser);
+        } else {
           router.push("/signIn");
         }
-        return signedUser;
-      });
+      }
     }
+    fetchAuth();
   }, [authService, router]);
 
   const onUploadFail = () => {
