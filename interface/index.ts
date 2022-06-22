@@ -55,7 +55,7 @@ export type AuthResT = {
 };
 
 export interface AuthServiceI {
-  getUser: () => AuthUserT | undefined;
+  getUser: () => Promise<AuthUserT | undefined>;
   signUp: (args: SignUpUserInputT) => Promise<AuthResT>;
   signIn: (args: SignInUserInputT) => Promise<AuthResT>;
   logout: () => void;

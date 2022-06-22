@@ -23,7 +23,6 @@ export default async function handler(
     throw new Error("cannot find BACKEND_URL");
   }
   const { postId, userId, accessToken } = req.body;
-
   const requestBody = {
     query,
     variables: { id: postId, userId },

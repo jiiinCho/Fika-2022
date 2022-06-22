@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import {
   CustomHead,
@@ -9,9 +9,10 @@ import {
   Footer,
 } from "@components/index";
 import { PostT } from "@interface/index";
-import s from "@styles/Landing.module.css";
 import { getConfig } from "@network/common/config";
+import { useAuthContext } from "context/AuthContext";
 import getAllPosts from "@network/post/get-all-posts";
+import s from "@styles/Landing.module.css";
 
 type Props = {
   posts: PostT[];
@@ -36,6 +37,18 @@ export const getStaticProps: GetStaticProps = async () => {
 
 export default function Landing({ posts }: Props) {
   const headerRef = useRef(null);
+  const authService = useAuthContext();
+  const [likedPost, setLikedPost] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getCurrUser() {
+      if (authService) {
+        const currUser = await authService.getUser();
+        currUser && setLikedPost(currUser.likedPosts);
+      }
+    }
+    getCurrUser();
+  }, [authService]);
 
   if (!posts) {
     return (
@@ -79,9 +92,10 @@ export default function Landing({ posts }: Props) {
       </header>
 
       <main className={`m-footer ${s.main}`}>
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
+        {posts.map((post) => {
+          const liked = likedPost.find((likedId) => likedId === post.id);
+          return <Post key={post.id} post={post} liked={!!liked} />;
+        })}
       </main>
       <Footer />
     </div>

@@ -93,7 +93,7 @@ export default function PostDetail({ currPost: post, related }: Props) {
 
   const handleOnLikes = async () => {
     if (authService) {
-      const currUser = authService.getUser();
+      const currUser = await authService.getUser();
       if (currUser && post) {
         const { post: postRes, liked } = await fetcher(
           "/api/updateLikesHandler",
@@ -116,13 +116,18 @@ export default function PostDetail({ currPost: post, related }: Props) {
   };
 
   useEffect(() => {
-    if (authService) {
-      const currUser = authService.getUser();
-      if (currUser && currUser.likedPosts.length && post) {
-        const found = currUser.likedPosts.find((postId) => postId === post.id);
-        setLikedPost(!!found);
+    async function getCurrUser() {
+      if (authService) {
+        const currUser = await authService.getUser();
+        if (currUser && currUser.likedPosts.length && post) {
+          const found = currUser.likedPosts.find(
+            (postId) => postId === post.id
+          );
+          setLikedPost(!!found);
+        }
       }
     }
+    getCurrUser();
   }, [authService, post]);
 
   if (router.isFallback) {

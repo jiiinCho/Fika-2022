@@ -9,17 +9,20 @@ import fetcher from "@network/fetcher";
 import imageUploader from "@network/imageUploader";
 
 export default class AuthService implements AuthServiceI {
-  private _user: AuthUserT | undefined;
   private _localStorageKey: string = "user";
 
-  getUser(): AuthUserT | undefined {
+  async getUser(): Promise<AuthUserT | undefined> {
     const retrievedObject = localStorage.getItem(this._localStorageKey);
     if (retrievedObject) {
       const userInLocal = JSON.parse(retrievedObject);
-      this._user = userInLocal;
-      return userInLocal;
+      const userId = userInLocal.id;
+      const { user } = await fetcher("/api/getUserHandler", { userId });
+      return {
+        ...user,
+        accessToken: userInLocal.accessToken,
+      };
     }
-    return this._user;
+    return undefined;
   }
   async signUp(args: SignUpUserInputT): Promise<AuthResT> {
     const { username, password, email, imgFile, isSignUp } = args;
@@ -33,7 +36,6 @@ export default class AuthService implements AuthServiceI {
 
     // Put the object into storage
     localStorage.setItem(this._localStorageKey, JSON.stringify(user));
-    this._user = user;
     return new Promise((resolve, _) => resolve({ user, message }));
   }
 
@@ -47,12 +49,10 @@ export default class AuthService implements AuthServiceI {
       await fetcher("/api/authHandler", reqBody);
 
     localStorage.setItem(this._localStorageKey, JSON.stringify(user));
-    this._user = user;
     return new Promise((resolve, _) => resolve({ user, message }));
   }
 
   async logout() {
     localStorage.clear();
-    this._user = undefined;
   }
 }

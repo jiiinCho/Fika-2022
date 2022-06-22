@@ -16,7 +16,13 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    authService && setCurrUser(authService.getUser());
+    async function getCurrUser() {
+      if (authService) {
+        const res = await authService.getUser();
+        setCurrUser(res);
+      }
+    }
+    getCurrUser();
   }, [authService]);
 
   return (

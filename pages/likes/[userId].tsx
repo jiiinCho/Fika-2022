@@ -71,7 +71,12 @@ export default function LikedPosts({ posts }: Props) {
       <main className={`m-footer bg-white ${s.main} ${s.searchResult}`}>
         {likedPostList.length ? (
           likedPostList.map((post) => (
-            <Post key={post.id} post={post} onDislike={handleOnDislike} />
+            <Post
+              key={post.id}
+              post={post}
+              liked={true}
+              onDislike={handleOnDislike}
+            />
           ))
         ) : (
           <section className={`flex ${s.redirect}`}>

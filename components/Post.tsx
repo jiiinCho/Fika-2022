@@ -12,10 +12,11 @@ import fetcher from "@network/fetcher";
 type Props = {
   post: PostT;
   onDislike?: (postId: string) => void;
+  liked?: boolean;
 };
 
-export default function Post({ post, onDislike }: Props) {
-  const [likedPost, setLikedPost] = useState(false);
+export default function Post({ post, onDislike, liked = false }: Props) {
+  const [likedPost, setLikedPost] = useState<boolean>(false);
 
   const {
     user: { username, avatar },
@@ -27,18 +28,25 @@ export default function Post({ post, onDislike }: Props) {
   const authService = useAuthContext();
 
   useEffect(() => {
-    if (authService) {
-      const currUser = authService.getUser();
-      if (currUser && currUser.likedPosts.length) {
-        const found = currUser.likedPosts.filter((postId) => postId === id);
-        found.length && setLikedPost(true);
-      }
-    }
-  }, [authService, id]);
+    setLikedPost(liked);
+  }, [liked]);
+
+  // useEffect(() => {
+  //   async function getCurrUser() {
+  //     if (authService) {
+  //       const currUser = await authService.getUser();
+  //       if (currUser && currUser.likedPosts.length) {
+  //         const found = currUser.likedPosts.filter((postId) => postId === id);
+  //         found.length && setLikedPost(true);
+  //       }
+  //     }
+  //   }
+  //   getCurrUser();
+  // }, [authService, id]);
 
   const handleOnBtnClick = async () => {
     if (authService) {
-      const currUser = authService.getUser();
+      const currUser = await authService.getUser();
       if (currUser) {
         const { liked } = await fetcher("/api/updateLikesHandler", {
           postId: id,
@@ -48,9 +56,9 @@ export default function Post({ post, onDislike }: Props) {
         setLikedPost(liked);
         onDislike && onDislike(id);
         //[TODO] because there is no getUser api
-        currUser.likedPosts = liked
-          ? [...currUser.likedPosts, id]
-          : currUser.likedPosts.filter((pid) => pid !== id);
+        // currUser.likedPosts = liked
+        //   ? [...currUser.likedPosts, id]
+        //   : currUser.likedPosts.filter((pid) => pid !== id);
       } else {
         router.push("/signIn");
       }
@@ -68,9 +76,8 @@ export default function Post({ post, onDislike }: Props) {
           objectFit="cover"
         />
       </div>
-
       <div className={s.meta}>
-        <button className="btn-reset" onClick={handleOnBtnClick}>
+        <button className="btn-reset" type="button" onClick={handleOnBtnClick}>
           <IHeart color={`${likedPost ? "icon-primary" : "icon-white"}`} />
         </button>
         <div className="flex" style={{ justifyContent: "space-between" }}>

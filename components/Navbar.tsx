@@ -15,8 +15,15 @@ export default function Navbar({ headerRef }: Props) {
   const [display, setDisplay] = useState(false);
   const [currUser, setCurrUser] = useState<AuthUserT | undefined>(undefined);
   const authService = useAuthContext();
+
   useEffect(() => {
-    authService && setCurrUser(authService.getUser());
+    async function getCurrUser() {
+      if (authService) {
+        const res = await authService.getUser();
+        setCurrUser(res);
+      }
+    }
+    getCurrUser();
   }, [authService]);
 
   const handleOnScroll = useCallback(() => {
