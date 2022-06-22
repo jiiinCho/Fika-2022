@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -32,18 +32,7 @@ interface Params extends ParsedUrlQuery {
   postId: string;
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [
-      { params: { postId: "62a8d7b50ca42fbec30a597f" } },
-      { params: { postId: "62a8d87a0ca42fbec30a5987" } },
-      { params: { postId: "62a8d8ca0ca42fbec30a598c" } },
-    ],
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps<Props, Params> = async (
+export const getServerSideProps: GetServerSideProps<Props, Params> = async (
   context
 ) => {
   const { postId } = context.params!;
@@ -76,7 +65,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
     console.log("error while fetching data in route : post/[postId]");
     console.error(err);
   } finally {
-    return { props: { currPost, related }, revalidate: 3 };
+    return { props: { currPost, related } };
   }
 };
 
