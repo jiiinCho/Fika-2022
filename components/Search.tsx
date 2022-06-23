@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ISearch, ILocation } from "@components/icons";
-import { NotFound, Footer } from "@components/index";
 import { useRouter } from "next/router";
 import fetcher from "@network/fetcher";
 import { LocationT } from "@interface/index";
@@ -63,32 +62,34 @@ export default function Search() {
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "ArrowDown":
-          setMetaIndex((prev) => {
-            if (prev <= locationMeta.length - 1) {
-              onMetaSelect(locationMeta[prev].id);
-              return prev + 1;
-            } else {
-              onMetaSelect(locationMeta[locationMeta.length - 1].id);
-              return locationMeta.length - 1;
-            }
-          });
-          break;
-        case "ArrowUp":
-          setMetaIndex((prev) => {
-            if (prev > 0) {
-              onMetaSelect(locationMeta[prev - 1].id);
-              return prev - 1;
-            } else {
-              onMetaSelect(locationMeta[0].id);
-              return 0;
-            }
-          });
-          break;
-        case "Enter":
-          onSubmit(locationId);
-          break;
+      if (locationMeta.length) {
+        switch (event.key) {
+          case "ArrowDown":
+            setMetaIndex((prev) => {
+              if (prev <= locationMeta.length - 1) {
+                onMetaSelect(locationMeta[prev].id);
+                return prev + 1;
+              } else {
+                onMetaSelect(locationMeta[locationMeta.length - 1].id);
+                return locationMeta.length - 1;
+              }
+            });
+            break;
+          case "ArrowUp":
+            setMetaIndex((prev) => {
+              if (prev > 0) {
+                onMetaSelect(locationMeta[prev - 1].id);
+                return prev - 1;
+              } else {
+                onMetaSelect(locationMeta[0].id);
+                return 0;
+              }
+            });
+            break;
+          case "Enter":
+            onSubmit(locationId);
+            break;
+        }
       }
     },
     [locationMeta, onMetaSelect, locationId, onSubmit]
